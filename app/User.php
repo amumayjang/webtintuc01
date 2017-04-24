@@ -31,4 +31,24 @@ class User extends Authenticatable
     {
         return $this->belongsTo("App\Role", "role_id");
     }
+
+    private function checkHasRole ($roleCheck)
+    {
+        return ($roleCheck == $this->role()->first()->id) ? true : null;
+    }
+
+    public function hasRole ($roles)
+    {
+        if (is_array($roles)) {
+            foreach ($roles as $role) {
+                if ($this->checkHasRole($role)) {
+                    return true;
+                }
+            }
+        } else {
+            return $this->checkHasRole($roles);
+        }
+        return false;
+    }
+
 }
