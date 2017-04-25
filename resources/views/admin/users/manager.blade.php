@@ -71,10 +71,6 @@
     <script src="{{ url("public/admin/vendor/datatables/js/jquery.dataTables.min.js") }}"></script>
     <script src="{{ url("public/admin/vendor/datatables-plugins/dataTables.bootstrap.min.js") }}"></script>
     <script src="{{ url("public/admin/vendor/datatables-responsive/dataTables.responsive.js") }}"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="{{ url("public/admin/dist/js/sb-admin-2.js") }}"></script>
-
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
     $(document).ready(function() {

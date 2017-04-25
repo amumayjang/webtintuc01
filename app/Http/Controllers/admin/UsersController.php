@@ -7,9 +7,24 @@ use App\Http\Controllers\Controller;
 use App\Role;
 use App\User;
 use Hash;
+use App\Repositories\UserRepositoryEloquent;
 
 class UsersController extends Controller
 {
+    protected $repository;
+
+    public function __construct(UserRepositoryEloquent $repository){
+        $this->repository = $repository;
+    }
+
+    public function getAllUser ()
+    {
+        $users = $this->repository->findByField('id', 3);
+        echo "<pre>";
+        var_dump($users);
+        echo "</pre>";
+    }
+
     public function create ()
     {
     	$roles = Role::all();

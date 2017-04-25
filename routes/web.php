@@ -23,13 +23,17 @@ Route::group(['prefix' => 'admin'], function () {
 	Route::get('login', ['as' => 'get.login', 'uses' => 'admin\LoginController@getLogin']);
 	Route::post('login', ['as' => 'login', 'uses' => 'admin\LoginController@login']);
 	Route::get('logout', ['as' => 'logout', 'uses' => 'admin\LoginController@getLogout']);
-	Route::group(['middleware' => ['authen', 'checkrole'], 'roles' => [2,3,4]], function () {
+	Route::group(['middleware' => ['authen', 'checkrole'], 'roles' => [1]], function () {
 		//Users manager
 		Route::group(['prefix' => 'users'], function () {
 			Route::get('add', ['as' => 'users.get.add','uses' => 'admin\UsersController@create']);
 			Route::post('add', ['as' => 'users.add','uses' => 'admin\UsersController@store']);
 			Route::get('manager', ['as' => 'users.manager', 'uses' => 'admin\UsersController@index']);
 			Route::get('update', ['as' => 'users.update', 'uses' => 'admin\UsersController@edit']);
+			Route::get('getupdate', function () {
+				return view('admin.users.update');
+			});
+			Route::get('test', 'admin\UsersController@getAllUser');
 		});
 	});
 });

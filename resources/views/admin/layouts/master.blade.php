@@ -259,7 +259,6 @@
                 <!-- /.dropdown -->
             </ul>
             <!-- /.navbar-top-links -->
-
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
@@ -275,43 +274,46 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Trang tổng quan</a>
+                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Tổng quan</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Bài viết<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Bài viết<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="">Danh sách bài viết</a>
+                                    <a href="flot.html">Tất cá bài viết</a>
                                 </li>
                                 <li>
-                                    <a href="">Thêm bài viết</a>
+                                    <a href="morris.html">Thêm bài viết</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href=""><i class="fa fa-table fa-fw"></i> Bình luận</a>
+                            <a href="tables.html"><i class="fa fa-comments-o fa-fw"></i> Bình luận</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Thành viên<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-book fa-fw"></i> Danh mục<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="">Danh sách thành viên</a>
+                                    <a href="panels-wells.html">Quản lý danh mục</a>
                                 </li>
                                 <li>
-                                    <a href="">Thêm thành viên</a>
+                                    <a href="buttons.html">Thêm danh mục</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Danh mục<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-list-ol fa-fw"></i> Menu<span class="fa arrow"></span></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-users fa-fw"></i> Thành viên<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="">Quản lý danh mục</a>
+                                    <a href="blank.html">Quản lý thành viên</a>
                                 </li>
                                 <li>
-                                    <a href="">Thêm danh mục</a>
+                                    <a href="login.html">Thêm thành viên</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -334,6 +336,9 @@
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="{{ url("public/admin/vendor/metisMenu/metisMenu.min.js") }}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{{ url("public/admin/dist/js/sb-admin-2.js") }}"></script>
 
     @yield('script')
 
