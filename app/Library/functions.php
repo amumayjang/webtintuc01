@@ -21,4 +21,20 @@
         $file->move($dir, $fileName);
         return $fileName;
 	}
+
+	function show_cates($cates, $select = 0, $parent = 0, $str = '')
+	{
+		foreach ($cates as $cate) {
+			$id = $cate->id;
+			$name = $cate->cate_name;
+			if ($parent == $cate->parent_id) {
+				if ($id == $select) {
+					echo "<option selected value='".$id."'>$str $name</option>";
+				} else {
+					echo "<option value='".$id."'>$str $name</option>";
+				}
+				show_cates($cates, $select, $id, $str.'--');
+			}
+		}
+	}
  ?>
