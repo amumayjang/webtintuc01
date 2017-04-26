@@ -42,11 +42,11 @@
                                         <td class="text-center">{{ $user->role()->get()->first()->role_name }}</td>
                                         <td class="text-center">{{ $user->created_at }}</td>
                                         <td class="text-center">
-                                            <a href="">
+                                            <a href="{{ route('users.edit', $user->id) }}">
                                                 <button type="button" class="btn btn-outline btn-info">Sửa</button>
                                             </a>                                        
-                                            <a href="">
-                                                <button type="button" class="btn btn-outline btn-danger">Sửa</button>
+                                            <a href="{{ route('users.delete', $user->id) }}">
+                                                <button type="button" class="btn btn-outline btn-danger">Xóa</button>
                                             </a>
                                         </td>
                                     </tr>
