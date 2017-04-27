@@ -70,7 +70,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $cates = $this->cateReposi->all();
+        $cate = $this->cateReposi->find($id);
+        return view('admin.category.edit', compact('cate', 'cates'));
     }
 
     /**
@@ -82,7 +84,12 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->cateReposi->update([
+                'cate_name' => $request->cate_name,
+                'description' => $request->description,
+                'parent_id' => $request->parent_id,
+            ], $id);
+        return redirect()->route('category.index');
     }
 
     /**

@@ -29,11 +29,6 @@
                                         <p class="help-block">Ví dụ: Thể thao</p>
                                     </div>
                                     <div class="form-group">
-                                        <label>Đường dẫn tĩnh</label>
-                                        <input class="form-control" name="slug" type="text">
-                                        <p class="help-block">Ví dụ: the-thao</p>
-                                    </div>
-                                    <div class="form-group">
                                         <label>Danh mục cha</label>
                                         <select name="parent_id"  class="form-control">
                                             <option value="">Lựa chọn danh mục cha...</option>
