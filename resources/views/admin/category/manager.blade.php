@@ -14,10 +14,15 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
+        @if (Session::has('flash_message'))
+            <div class="alert alert-{{ Session::get('flash_level') }}">
+                {{ Session::get('flash_message') }}
+            </div>
+        @endif
         <!-- /.row -->
         <div class="row">
             <div class="col-lg-12">
-                <div class="panel panel-default">
+                <div class="panel panel-primary">
                     <div class="panel-heading">
                         Tất cả danh mục
                     </div>
@@ -43,11 +48,33 @@
                                         <td class="text-center">{{ $cate->description }}</td>
                                         <td class="text-center">
                                             <a href="{{ route('category.edit', $cate->id) }}">
-                                                <button type="button" class="btn btn-outline btn-info">Sửa</button>
+                                                <button type="button" class="btn btn-info">Sửa</button>
                                             </a>                                        
-                                            <a href="{{ route('category.destroy', $cate->id) }}">
-                                                <button type="button" class="btn btn-outline btn-danger">Xóa</button>
-                                            </a>
+                                            <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-danger">Xóa</button>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title">Bạn có chắc muốn xóa?</h4>
+                                                        </div>
+                                                        <form action="{{ route('category.destroy', $cate->id) }}" method="post">
+                                                            <div class="modal-body">
+                                                                <p>Danh mục: {{ $cate->cate_name }}</p>
+                                                                {{ csrf_field() }}
+                                                                <input type="hidden" name="_method" value="DELETE">
+                                                                <input type="hidden" name="id" value="{{ $cate->id }}">
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary">Xóa</button>
+                                                            </div>
+                                                        </form>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div><!-- /.modal -->
+                                            <!-- /.modal -->
                                         </td>
                                     </tr>
                                 @endforeach
@@ -72,11 +99,19 @@
     <script src="{{ url("public/admin/vendor/datatables-plugins/dataTables.bootstrap.min.js") }}"></script>
     <script src="{{ url("public/admin/vendor/datatables-responsive/dataTables.responsive.js") }}"></script>
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-    <script>
-    $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-            responsive: true
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#dataTables-example').DataTable({
+                responsive: true
+            });
+            $("div.alert").delay(3000).slideUp();
         });
-    });
+        // tooltip demo
+        $('.tooltip-demo').tooltip({
+            selector: "[data-toggle=tooltip]",
+            container: "body"
+        })
+        // popover demo
+        $("[data-toggle=popover]").popover()
     </script>
 @endsection

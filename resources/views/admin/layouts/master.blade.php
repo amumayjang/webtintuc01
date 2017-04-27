@@ -340,6 +340,9 @@
     <!-- Custom Theme JavaScript -->
     <script src="{{ url("public/admin/dist/js/sb-admin-2.js") }}"></script>
 
+    <!-- My JavaScript -->
+    <script src="{{ url("public/admin/js/add-scripts.js") }}"></script>
+
     @yield('script')
 
 </body>

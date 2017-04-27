@@ -37,7 +37,7 @@ Route::group(['prefix' => 'admin'], function () {
 		});
 
 		//Category manager
-		Route::resource('category', 'admin\CategoryController');
+		Route::resource('category', 'admin\CategoryController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
 		/*
 		|--------------------------------------------------------------------------
 		| Actions Handled By Resource Controller

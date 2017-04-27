@@ -48,7 +48,7 @@ class CategoryController extends Controller
                 'parent_id' => $request->parent_id,
                 'description' => $request->description,
             ]);
-        return redirect()->route('category.index');
+        return redirect()->route('category.index')->with(['flash_message' => 'Tạo danh mục thành công!', 'flash_level' => 'success']);
     }
 
     /**
@@ -100,6 +100,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        var_dump($id); die;
+        $this->cateReposi->delete($id);
+        return redirect()->route('category.index')->with(['flash_message' => 'Xóa danh mục thành công!', 'flash_level' => 'success']);
     }
 }
