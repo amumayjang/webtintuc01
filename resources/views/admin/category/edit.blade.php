@@ -28,6 +28,15 @@
                                             <p class="text-danger">{{ $errors->first('cate_name') }}</p>
                                         @endif
                                         <p class="help-block">Ví dụ: Thể thao</p>
+                                    </div>                                    
+                                    <div class="form-group">
+                                        <label>Đường dẫn tĩnh</label>
+                                        <input class="form-control input-sm" disabled value="{{ $cate->slug }}" name="slug" type="text">
+                                        <p class="text-danger" id="msg_slug"></p>
+                                        @if ($errors->has('slug'))
+                                            <p class="text-danger">{{ $errors->first('slug') }}</p>
+                                        @endif
+                                        <p class="help-block">Ví dụ: Thể thao</p>
                                     </div>
                                     <div class="form-group">
                                         <label>Danh mục cha</label>

@@ -22,11 +22,21 @@
                                 {{ csrf_field() }}
                                     <div class="form-group">
                                         <label>Tên danh mục</label>
-                                        <input class="form-control" name="cate_name" type="text">
+                                        <input class="form-control" slug="input" name="cate_name" type="text">
+                                        <p class="text-danger msg-result" id="msg_cate_name"></p>
                                         @if ($errors->has('cate_name'))
                                             <p class="text-danger">{{ $errors->first('cate_name') }}</p>
                                         @endif
                                         <p class="help-block">Ví dụ: Thể thao</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Đường dẫn tĩnh</label>
+                                        <input class="form-control input-sm" slug="output" name="slug" type="text">
+                                        <p class="text-danger" id="msg_slug"></p>
+                                        @if ($errors->has('slug'))
+                                            <p class="text-danger">{{ $errors->first('slug') }}</p>
+                                        @endif
+                                        <p class="help-block">Ví dụ: the-thao</p>
                                     </div>
                                     <div class="form-group">
                                         <label>Danh mục cha</label>
@@ -61,4 +71,10 @@
         <!-- /.row -->
     </div>
     <!-- /#page-wrapper -->
-@stop
+@endsection
+@section('script')
+    <script type="text/javascript">
+        var url = "{{ route('category.make-slug') }}";
+        makeSlug();
+    </script>
+@endsection

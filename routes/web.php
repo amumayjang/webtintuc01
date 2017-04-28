@@ -38,6 +38,7 @@ Route::group(['prefix' => 'admin'], function () {
 
 		//Category manager
 		Route::resource('category', 'admin\CategoryController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
+		Route::get('category/make-slug', ['as' => 'category.make-slug', 'uses' => 'admin\CategoryController@makeSlug']);
 		/*
 		|--------------------------------------------------------------------------
 		| Actions Handled By Resource Controller

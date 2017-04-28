@@ -50,9 +50,9 @@
                                             <a href="{{ route('category.edit', $cate->id) }}">
                                                 <button type="button" class="btn btn-info">Sửa</button>
                                             </a>                                        
-                                            <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-danger">Xóa</button>
+                                            <button type="button" data-toggle="modal" data-target="#myModal-{{ $cate->id }}" class="btn btn-danger">Xóa</button>
                                             <!-- Modal -->
-                                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+                                            <div class="modal fade" id="myModal-{{ $cate->id }}" tabindex="-1" role="dialog">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -67,8 +67,8 @@
                                                                 <input type="hidden" name="id" value="{{ $cate->id }}">
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary">Xóa</button>
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                                                <button type="submit" class="btn btn-danger">Xóa</button>
                                                             </div>
                                                         </form>
                                                     </div><!-- /.modal-content -->

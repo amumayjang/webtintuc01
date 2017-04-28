@@ -100,8 +100,21 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        var_dump($id); die;
         $this->cateReposi->delete($id);
         return redirect()->route('category.index')->with(['flash_message' => 'Xóa danh mục thành công!', 'flash_level' => 'success']);
     }
+
+    public function makeSlug()
+    {
+        $str = $_GET['str'];
+        $slug = str_slug($str);
+        $countSlug = count($this->cateReposi->findWhere(['slug' => $slug]));
+        if ($countSlug > 0) {
+            $result = false;
+        } else {
+            $result = true;
+        }
+        echo json_encode([$result, 'slug' => $slug]);
+    }
+
 }
