@@ -32,7 +32,7 @@
                                     <div class="form-group">
                                         <label>Đường dẫn tĩnh</label>
                                         <input class="form-control input-sm" slug="output" name="slug" type="text">
-                                        <p class="text-danger" id="msg_slug"></p>
+                                        <p class="text-danger msg-result" id="msg_slug"></p>
                                         @if ($errors->has('slug'))
                                             <p class="text-danger">{{ $errors->first('slug') }}</p>
                                         @endif
@@ -46,9 +46,6 @@
                                                show_cates($cates)
                                             @endphp
                                         </select>
-                                        @if ($errors->has('parent_id'))
-                                            <p class="text-danger">{{ $errors->first('parent_id') }}</p>
-                                        @endif
                                     </div>
                                     <div class="form-group">
                                         <label>Mô tả</label>
@@ -75,6 +72,6 @@
 @section('script')
     <script type="text/javascript">
         var url = "{{ route('category.make-slug') }}";
-        makeSlug();
+        makeSlug(url);
     </script>
 @endsection

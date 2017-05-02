@@ -5,6 +5,8 @@ namespace App\Http\Controllers\admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\CategoryRepositoryEloquent;
+use App\Http\Requests\CreateCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -40,7 +42,7 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateCategoryRequest $request)
     {
         $this->cateReposi->create([
                 'cate_name' => $request->cate_name,
@@ -82,10 +84,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCategoryRequest $request, $id)
     {
         $this->cateReposi->update([
                 'cate_name' => $request->cate_name,
+                'slug' => str_slug($request->slug),
                 'description' => $request->description,
                 'parent_id' => $request->parent_id,
             ], $id);
@@ -104,15 +107,25 @@ class CategoryController extends Controller
         return redirect()->route('category.index')->with(['flash_message' => 'Xóa danh mục thành công!', 'flash_level' => 'success']);
     }
 
+/**
+Make slug from input and check unique slug in category table
+*/
     public function makeSlug()
     {
-        $str = $_GET['str'];
-        $slug = str_slug($str);
-        $countSlug = count($this->cateReposi->findWhere(['slug' => $slug]));
-        if ($countSlug > 0) {
-            $result = false;
+        if (isset($_GET['str'])) {
+            $str = $_GET['str'];
+            $slug = str_slug($str);
+            //Check slug in category table
+            $countSlug = count($this->cateReposi->findWhere(['slug' => $slug]));
+            //if has slug in category table => return false else => return true and slug
+            if ($countSlug > 0) {
+                $result = false;
+            } else {
+                $result = true;
+            }
         } else {
-            $result = true;
+            $result = false;
+            $slug = "";
         }
         echo json_encode([$result, 'slug' => $slug]);
     }

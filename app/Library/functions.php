@@ -11,7 +11,7 @@
 		}
 	}
 
-//upload file to public/admin/uploads/ and return result name of file upload
+//upload image ($file) to server (into directory $dir) and return file name save
 	function files_upload($dir = 'public/admin/uploads/', $file)
 	{
         $fileName = str_random(5).'_'.$file->getClientOriginalName();
@@ -22,6 +22,7 @@
         return $fileName;
 	}
 
+//show category option of select input. Input are list category ($cates) and selected default ($select)
 	function show_cates($cates, $select = 0, $parent = 0, $str = '')
 	{
 		foreach ($cates as $cate) {
@@ -37,4 +38,5 @@
 			}
 		}
 	}
+
  ?>
