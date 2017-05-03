@@ -24,6 +24,9 @@
     <!-- Custom Fonts -->
     <link href="{{ url("public/admin/vendor/font-awesome/css/font-awesome.min.css") }}" rel="stylesheet" type="text/css">
 
+    <!-- edit css -->
+    <link href="{{ url("public/admin/css/edit.css") }}" rel="stylesheet" type="text/css">
+
     @yield('head')
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

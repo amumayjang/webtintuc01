@@ -1,0 +1,6 @@
+.div-hidden {
+	display: none;
+}
+.div-show:hover .div-hidden {
+	display: block;
+}

@@ -75,7 +75,7 @@
                                         <label class="control-label"><i class="fa fa-calendar"></i>Thời gian xuất bản
                                         </label>
                                         <div class="input-append date form_datetime">
-                                            <input size="16" type="text" value="{{ $time }}" readonly>
+                                            <input size="16" name="time_public" type="text" value="{{ $time }}" readonly>
                                             <span class="add-on"><i class="icon-remove"></i></span>
                                             <span class="add-on"><i class="icon-calendar"></i></span>
                                         </div>
