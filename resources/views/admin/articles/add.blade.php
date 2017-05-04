@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 @section('head')
-    <link rel="stylesheet" href="{{ url('public/admin/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
     <link rel="stylesheet" href="{{ url('public/admin/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css') }}">
+    <link rel="stylesheet" href="{{ url('public/admin/plugins/select2/dist/css/select2.min.css') }}">
     <script src="{{ url('public/admin/js/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
     <script src="{{ url('public/admin/js/ckfinder/ckfinder.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
@@ -33,6 +33,10 @@
                                         <label>Tiêu đề:</label>
                                         <input type="text" class="form-control" name="title">
                                     </div>
+                                    <div class="form-group">
+                                        <label>Đường dẫn:</label>
+                                        <input type="text" class="form-control input-sm" name="slug">
+                                    </div>
                                 </div>
                                 <div class="panel-body">
                                     <div class="form-group">
@@ -60,12 +64,14 @@
                                         <label>Danh mục</label>
                                         @isset ($cates)
                                             <select name="cate_id"  class="form-control">
-                                                <option value="">Lựa chọn danh mục...</option>
                                                 @php
                                                    show_cates($cates)
                                                 @endphp
                                             </select>
                                         @endisset
+                                        <p>
+                                            <a href="javascript:;">Thêm danh mục</a>
+                                        </p>
                                     </div>
                                     <div class="form-group">
                                         <label>Ảnh đại diện</label>
@@ -74,23 +80,34 @@
                                     <div class="form-group">
                                         <label class="control-label"><i class="fa fa-calendar"></i>Thời gian xuất bản
                                         </label>
-                                        <div class="input-append date form_datetime">
-                                            <input size="16" name="time_public" type="text" value="{{ $time }}" readonly>
-                                            <span class="add-on"><i class="icon-remove"></i></span>
-                                            <span class="add-on"><i class="icon-calendar"></i></span>
+                                        <div class="input-group date form_datetime" data-date="2017-01-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
+                                            <input class="form-control" size="16" type="text" value="{{ $time }}" readonly>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                                         </div>
+                                        <input type="hidden" id="dtp_input1" value="" /><br/>
                                     </div>
                                     <div class="form-group">
                                         <label>Bài viết hot</label> <br>
                                             <div class="radio">
-                                                <label><input type="radio" name="hot" value="1">Có</label>
+                                                <label><input type="radio" name="hot" value="1">Có
+                                                </label>
                                             </div>
                                             <div class="radio">
-                                                <label><input type="radio" name="hot" checked value="0">Không</label>
+                                                <label><input type="radio" checked name="hot" value="0">Không
+                                                </label>
                                             </div>
                                     <div class="form-group">
                                         <label>Thẻ tag</label>
-                                        <input type="text" class="form-control" name="name_tags" data-role="tagsinput" />
+                                        <p>
+                                            <select class="js-example-tags form-control" name="name_tag[]" multiple="multiple">
+                                                @isset($tags)
+                                                    @foreach ($tags as $tag)
+                                                        <option value="{{ $tag->name_tag }}">{{ $tag->name_tag }}</option>
+                                                    @endforeach
+                                                @endisset
+                                            </select>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -112,17 +129,18 @@
     <!-- /#page-wrapper -->
 @endsection
 @section('script')
-    <script src="{{ url('public/admin/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}"></script>
     <script src="{{ url('public/admin/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js') }}"></script>
+    <script src="{{ url('public/admin/plugins/select2/dist/js/select2.min.js') }}"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-            $(".form_datetime").datetimepicker({
-                format: "yyyy-mm-dd hh:ii",
-                autoclose: true,
-                todayBtn: true,
-                startDate: "2017-01-01 00:00",
-                minuteStep: 5
-            });
+        $(".form_datetime").datetimepicker({
+            format: "dd MM yyyy - hh:ii",
+            autoclose: true,
+            todayBtn: true,
+            startDate: "2017-01-01 10:00",
+            minuteStep: 5
+        });
+        $(".js-example-tags").select2({
+            tags: true
         })
     </script>
 @endsection

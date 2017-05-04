@@ -40,8 +40,9 @@ class ArticlesController extends Controller
     public function create()
     {
         $cates = $this->cateReposi->all();
-        $time = date("Y-m-d G:i");
-        return view('admin.articles.add', compact('cates', 'time'));
+        $tags = $this->tagReposi->all();
+        $time = date("d-m-Y G:i");
+        return view('admin.articles.add', compact('cates', 'time', 'tags'));
     }
 
     /**
@@ -60,7 +61,6 @@ class ArticlesController extends Controller
                 'title' => $request->title,
                 'content' => $request->content,
                 'slug' => str_slug($request->title),
-                'description' => substr(strip_tags($request->content), 0, 100),
                 'user_id' => Auth::id(),
                 'cate_id' => $request->cate_id,
                 'time_public' => $request->time_public,
@@ -68,9 +68,8 @@ class ArticlesController extends Controller
                 'imgThumb' => $nameImage,
             ]);
         $lastArticle = $this->articlesReposi->all()->last();
-        if ($request->has('name_tags')) {
-            $tags = preg_split('/[,]+/', $request->name_tags);
-            foreach ($tags as $tag) {
+        if ($request->has('name_tag')) {
+            foreach ($request->name_tag as $tag) {
                 $tagCheck = $this->tagReposi->findByField('name_tag', $tag)->first();
                 if ($tagCheck) {
                     $this->articleTagReposi->create([
@@ -87,6 +86,7 @@ class ArticlesController extends Controller
                 }
             }
         }
+        return redirect()->route('articles.index')->with(['flash_message' => 'Thêm bài viết thành công!', 'flash_level' => 'success']);
     }
 
     /**
@@ -136,16 +136,16 @@ class ArticlesController extends Controller
                 'title' => $request->title,
                 'content' => $request->content,
                 'slug' => str_slug($request->title),
-                'description' => substr(strip_tags($request->content), 0, 100),
                 'cate_id' => $request->cate_id,
                 'hot' => $request->hot,
                 'imgThumb' => $nameImage,
             ], $id);
         $findOldTag = $this->articleTagReposi->findByField('article_id', $id);
-        
-        if ($request->has('name_tags')) {
-            $tags = preg_split('/[,]+/', $request->name_tags);
-            foreach ($tags as $tag) {
+        foreach ($findOldTag as $tag) {
+            $tag->delete();
+        }
+        if ($request->has('name_tag')) {
+            foreach ($request->name_tag as $tag) {
                 $tagCheck = $this->tagReposi->findByField('name_tag', $tag)->first();
                 if ($tagCheck) {
                     $this->articleTagReposi->create([
@@ -162,9 +162,7 @@ class ArticlesController extends Controller
                 }
             }
         }
-        
         return redirect()->route('articles.index');
-
     }
 
     /**
@@ -175,6 +173,7 @@ class ArticlesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->articlesReposi->delete($id);
+        return redirect()->route('articles.index')->with(['flash_message' => 'Xóa bài viết thành công!', 'flash_level' => 'success']);
     }
 }

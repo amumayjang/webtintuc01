@@ -19,8 +19,8 @@ class CreateArticlesTable extends Migration
             $table->longText('content');
             $table->string('slug');
             $table->string('imgThumb')->nullable();
-            $table->mediumText('description');
-            $table->integer('user_id')->unsigned();
+            $table->mediumText('description')->nullable();
+            $table->integer('user_id');
             $table->integer('cate_id')->unsigned();
             $table->dateTime('time_public')->nullable();
             $table->tinyInteger('hot')->nullable();

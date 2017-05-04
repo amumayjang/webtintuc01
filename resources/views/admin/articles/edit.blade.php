@@ -82,10 +82,20 @@
                                     <div class="form-group">
                                         <label>Bài viết hot</label> <br>
                                             <div class="radio">
-                                                <label><input type="radio" name="hot" value="1">Có</label>
+                                                <label><input type="radio" name="hot" value="1"
+                                                    @if ($article->hot == 1)
+                                                        checked
+                                                    @endif
+                                                >Có
+                                                </label>
                                             </div>
                                             <div class="radio">
-                                                <label><input type="radio" name="hot" checked value="0">Không</label>
+                                                <label><input type="radio" name="hot" value="0"
+                                                @if ($article->hot == 0)
+                                                        checked
+                                                    @endif
+                                                >Không
+                                                </label>
                                             </div>
                                     <div class="form-group">
                                         <label>Thẻ tag</label>

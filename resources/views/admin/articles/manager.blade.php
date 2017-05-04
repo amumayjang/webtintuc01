@@ -43,7 +43,7 @@
                                 @foreach ($articles as $article)
                                     <tr class="odd gradeX div-show">
                                         <td class="center">{{ $article->title }}
-                                            <div class="panel pull-right div-hidden">
+                                            <p class="text-center div-hidden">
                                                 <a href="{{ route('articles.edit', $article->id) }}">
                                                     <button type="button" class="btn btn-info"><i class="fa fa-pencil"></i>
                                                     </button>
@@ -51,31 +51,31 @@
                                                 <button type="button" data-toggle="modal" data-target="#myModal-{{ $article->id }}" class="btn btn-danger">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="myModal-{{ $article->id }}" tabindex="-1" role="dialog">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                <h4 class="modal-title">Bạn có chắc muốn xóa?</h4>
+                                            </p>
+                                        <!-- Modal -->
+                                            <div class="modal fade" id="myModal-{{ $article->id }}" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title">Bạn có chắc muốn xóa?</h4>
+                                                        </div>
+                                                        <form action="{{ route('articles.destroy', $article->id) }}" method="post">
+                                                            <div class="modal-body">
+                                                                <p>Bài viết: {{ $article->title }}</p>
+                                                                {{ csrf_field() }}
+                                                                <input type="hidden" name="_method" value="DELETE">
+                                                                <input type="hidden" name="id" value="{{ $article->id }}">
                                                             </div>
-                                                            <form action="{{ route('category.destroy', $article->id) }}" method="post">
-                                                                <div class="modal-body">
-                                                                    <p>Bài viết: {{ $article->title }}</p>
-                                                                    {{ csrf_field() }}
-                                                                    <input type="hidden" name="_method" value="DELETE">
-                                                                    <input type="hidden" name="id" value="{{ $article->id }}">
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-                                                                    <button type="submit" class="btn btn-danger">Xóa</button>
-                                                                </div>
-                                                            </form>
-                                                        </div><!-- /.modal-content -->
-                                                    </div><!-- /.modal-dialog -->
-                                                </div>
-                                                <!-- /.modal -->
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                                                <button type="submit" class="btn btn-danger">Xóa</button>
+                                                            </div>
+                                                        </form>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
                                             </div>
+                                            <!-- /.modal -->
                                         </td>
                                         <td class="text-center">{{ $article->cate()->get()->first()->cate_name }}</td>
                                         <td class="text-center">

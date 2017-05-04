@@ -41,7 +41,7 @@ Route::group(['prefix' => 'admin'], function () {
 	Route::get('category/make-slug', ['as' => 'category.make-slug', 'uses' => 'admin\CategoryController@makeSlug']);
 
 //check role, only admin
-	Route::group(['middleware' => ['authen', 'checkrole'], 'roles' => [4]], function () {
+	Route::group(['middleware' => ['authen', 'checkrole'], 'roles' => [1000]], function () {
 
 		//Article manager
 		Route::resource('articles', 'admin\ArticlesController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
