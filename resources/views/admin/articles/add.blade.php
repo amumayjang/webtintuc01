@@ -31,11 +31,18 @@
                                 <div class="panel-heading">
                                     <div class="form-group">
                                         <label>Tiêu đề:</label>
-                                        <input type="text" class="form-control" name="title">
+                                        <input type="text" class="form-control" slug="input" name="title">
+                                        <p class="text-danger msg-result"></p>
                                     </div>
                                     <div class="form-group">
-                                        <label>Đường dẫn:</label>
-                                        <input type="text" class="form-control input-sm" name="slug">
+                                        <label>Đường dẫn:</label> <br>
+                                        <div class="col-lg-3">
+                                            <input type="text" class="form-control input-sm" value="{{ url('/') }}" disabled>
+                                        </div>                                        
+                                        <div class="col-lg-9">
+                                            <input type="text" class="form-control input-sm" slug="output" name="slug">
+                                        </div>
+                                        <p class="text-danger msg-result"></p>
                                     </div>
                                 </div>
                                 <div class="panel-body">
@@ -70,7 +77,7 @@
                                             </select>
                                         @endisset
                                         <p>
-                                            <a href="javascript:;">Thêm danh mục</a>
+                                            <a href="{{ route('category.create') }}">Thêm danh mục</a>
                                         </p>
                                     </div>
                                     <div class="form-group">
@@ -80,8 +87,8 @@
                                     <div class="form-group">
                                         <label class="control-label"><i class="fa fa-calendar"></i>Thời gian xuất bản
                                         </label>
-                                        <div class="input-group date form_datetime" data-date="2017-01-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
-                                            <input class="form-control" size="16" type="text" value="{{ $time }}" readonly>
+                                        <div class="input-group date form_datetime" data-link-field="dtp_input1">
+                                            <input class="form-control" name="time_public" size="16" type="text" value="{{ $time }}" readonly>
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                                         </div>
@@ -100,7 +107,7 @@
                                     <div class="form-group">
                                         <label>Thẻ tag</label>
                                         <p>
-                                            <select class="js-example-tags form-control" name="name_tag[]" multiple="multiple">
+                                            <select class="js-tags form-control" name="name_tag[]" multiple="multiple">
                                                 @isset($tags)
                                                     @foreach ($tags as $tag)
                                                         <option value="{{ $tag->name_tag }}">{{ $tag->name_tag }}</option>
@@ -133,14 +140,30 @@
     <script src="{{ url('public/admin/plugins/select2/dist/js/select2.min.js') }}"></script>
     <script type="text/javascript">
         $(".form_datetime").datetimepicker({
-            format: "dd MM yyyy - hh:ii",
+            format: "yyyy-mm-dd hh:ii",
             autoclose: true,
             todayBtn: true,
             startDate: "2017-01-01 10:00",
             minuteStep: 5
         });
-        $(".js-example-tags").select2({
+        $(".js-tags").select2({
             tags: true
         })
+        $(document).ready(function() {
+            //make url to send ajax of checkslug function
+            var url = "{{ route('articles.make-slug') }}";
+            $("[slug='input']").blur(function() {
+                var str = $("[slug='input']").val();
+                var msg = $(this).parent().children("p.msg-result");
+                var labelName = "Tiêu đề";
+                makeSlug(url, str, msg, labelName);
+            })
+
+            $("[slug='output']").blur(function() {
+                var str = $("[slug='output']").val();
+                var msg = $(this).parent().parent().children("p.msg-result");
+                var labelName = "Đường dẫn";
+                makeSlug(url, str, msg, labelName);
+            })
+        })
     </script>
-@endsection

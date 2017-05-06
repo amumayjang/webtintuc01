@@ -45,5 +45,9 @@ Route::group(['prefix' => 'admin'], function () {
 
 		//Article manager
 		Route::resource('articles', 'admin\ArticlesController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
+		Route::get('articles/make-slug', ['as' => 'articles.make-slug', 'uses' => 'admin\ArticlesController@makeSlug']);
 	});
+
+	//comment manager
+	Route::resource('comments', 'admin\CommentsController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
 });

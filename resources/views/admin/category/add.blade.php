@@ -72,6 +72,20 @@
 @section('script')
     <script type="text/javascript">
         var url = "{{ route('category.make-slug') }}";
-        makeSlug(url);
+        $(document).ready(function() {
+            $("[slug='input']").blur(function() {
+                var str = $("[slug='input']").val();
+                var msg = $(this).parent().children("p.msg-result");
+                var labelName = $(this).parent().children("label").text();
+                makeSlug(url, str, msg, labelName);
+            })
+
+            $("[slug='output']").blur(function() {
+                var str = $("[slug='output']").val();
+                var msg = $(this).parent().children("p.msg-result");
+                var labelName = $(this).parent().children("label").text();
+                makeSlug(url, str, msg, labelName);
+            })
+        })
     </script>
 @endsection

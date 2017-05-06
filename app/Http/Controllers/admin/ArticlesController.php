@@ -41,7 +41,7 @@ class ArticlesController extends Controller
     {
         $cates = $this->cateReposi->all();
         $tags = $this->tagReposi->all();
-        $time = date("d-m-Y G:i");
+        $time = date("Y-m-d G:i");
         return view('admin.articles.add', compact('cates', 'time', 'tags'));
     }
 
@@ -60,7 +60,7 @@ class ArticlesController extends Controller
         $this->articlesReposi->create([
                 'title' => $request->title,
                 'content' => $request->content,
-                'slug' => str_slug($request->title),
+                'slug' => $request->slug,
                 'user_id' => Auth::id(),
                 'cate_id' => $request->cate_id,
                 'time_public' => $request->time_public,
@@ -110,10 +110,7 @@ class ArticlesController extends Controller
     {
         $article = $this->articlesReposi->find($id);
         $cates = $this->cateReposi->all();
-        $tags = '';
-        foreach ($article->tags()->get() as $tag) {
-            $tags .= $tag->name_tag.",";
-        }
+        $tags = $this->tagReposi->all();
         return view('admin.articles.edit', compact('article', 'cates', 'tags'));
     }
 
@@ -130,12 +127,14 @@ class ArticlesController extends Controller
         $article = $this->articlesReposi->find($id);
         if ($request->hasFile('thumbnail_image')) {
             $nameImage = files_upload('public/admin/uploads/images/thumbnail-articles', $request->file('thumbnail_image'));
-            unlink('public/admin/uploads/images/thumbnail-articles/'.$article->imgThumb);
+            if (file_exists('public/admin/uploads/images/thumbnail-articles/'.$article->imgThumb)) {
+                unlink('public/admin/uploads/images/thumbnail-articles/'.$article->imgThumb);
+            }
         }
         $this->articlesReposi->update([
                 'title' => $request->title,
                 'content' => $request->content,
-                'slug' => str_slug($request->title),
+                'slug' => $request->slug,
                 'cate_id' => $request->cate_id,
                 'hot' => $request->hot,
                 'imgThumb' => $nameImage,
@@ -175,5 +174,27 @@ class ArticlesController extends Controller
     {
         $this->articlesReposi->delete($id);
         return redirect()->route('articles.index')->with(['flash_message' => 'Xóa bài viết thành công!', 'flash_level' => 'success']);
+    }
+
+//create slug for article
+    public function makeSlug()
+    {
+
+        if (isset($_GET['str'])) {
+            $str = $_GET['str'];
+            $slug = str_slug($str);
+            //Check slug in articles table
+            $slugCheck = $this->articlesReposi->findByField('slug', $slug)->first();
+            //if has slug in articles table => return false else => return true and slug
+            if ($slugCheck) {
+                $result = false;
+            } else {
+                $result = true;
+            }
+        } else {
+            $result = false;
+            $slug = "";
+        }
+        echo json_encode([$result, 'slug' => $slug]);
     }
 }
