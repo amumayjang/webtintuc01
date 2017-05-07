@@ -15,3 +15,4 @@ function makeSlug(url, str, msg, labelName) {
             }
         })
 }
+

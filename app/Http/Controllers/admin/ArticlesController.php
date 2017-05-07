@@ -8,6 +8,7 @@ use App\Repositories\CategoryRepositoryEloquent;
 use App\Repositories\ArticleRepositoryEloquent;
 use App\Repositories\TagRepositoryEloquent;
 use App\Repositories\ArticleTagRepositoryEloquent;
+use App\Repositories\CommentRepositoryEloquent;
 use Auth;
 
 
@@ -15,11 +16,23 @@ class ArticlesController extends Controller
 {
     protected $cateReposi;
     protected $articlesReposi;
-    public function __construct(CategoryRepositoryEloquent $cateReposi, ArticleRepositoryEloquent $articlesReposi, TagRepositoryEloquent $tagReposi, ArticleTagRepositoryEloquent $articleTagReposi){
+    protected $tagReposi;
+    protected $articleTagReposi;
+    protected $commentReposi;
+
+    /**
+     * @param Category Model
+     * @param Article Model
+     * @param Tag Model
+     * @param ArticleTag Model
+     * @param Comment Model
+     */
+    public function __construct(CategoryRepositoryEloquent $cateReposi, ArticleRepositoryEloquent $articlesReposi, TagRepositoryEloquent $tagReposi, ArticleTagRepositoryEloquent $articleTagReposi, CommentRepositoryEloquent $commentReposi){
         $this->cateReposi = $cateReposi;
         $this->articlesReposi = $articlesReposi;
         $this->tagReposi = $tagReposi;
         $this->articleTagReposi = $articleTagReposi;
+        $this->commentReposi = $commentReposi;
     }
     /**
      * Display a listing of the resource.
@@ -111,7 +124,8 @@ class ArticlesController extends Controller
         $article = $this->articlesReposi->find($id);
         $cates = $this->cateReposi->all();
         $tags = $this->tagReposi->all();
-        return view('admin.articles.edit', compact('article', 'cates', 'tags'));
+        $comments = $this->commentReposi->findByField('article_id', $id);
+        return view('admin.articles.edit', compact('article', 'cates', 'tags', 'comments'));
     }
 
     /**
@@ -127,7 +141,7 @@ class ArticlesController extends Controller
         $article = $this->articlesReposi->find($id);
         if ($request->hasFile('thumbnail_image')) {
             $nameImage = files_upload('public/admin/uploads/images/thumbnail-articles', $request->file('thumbnail_image'));
-            if (file_exists('public/admin/uploads/images/thumbnail-articles/'.$article->imgThumb)) {
+            if ($article->imgThumb != "") {
                 unlink('public/admin/uploads/images/thumbnail-articles/'.$article->imgThumb);
             }
         }

@@ -4,3 +4,14 @@
 .div-show:hover .div-hidden {
 	display: block;
 }
+a:hover, a:focus, a:active {
+	text-decoration: none;
+}
+
+ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	list-style-type: none;
+}
+

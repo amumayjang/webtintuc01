@@ -147,6 +147,153 @@
             </form>
         </div>
         <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="panel panel-heading">
+                    <h3>Bình luận:</h3>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modalAdd">Thêm bình luận</button>
+                    <!-- Modal reply -->
+                    <div class="modal fade" id="modalAdd" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Thêm bình luận</h4>
+                                </div>
+                                <form action="{{ route('comments.store') }}" method="POST">
+                                    <div class="modal-body">
+                                        {{ csrf_field() }}
+                                        <div class="form-group">
+                                            <textarea class="form-control" rows="5" name="content_cmt"></textarea>
+                                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                            <input type="hidden" name="article_id" value="{{ $article->id }}">
+                                            <input type="hidden" name="parent_id" value="0">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Đăng</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="table">
+                    <tbody id="show-comments">
+                        @isset($comments)
+                            @foreach ($comments as $comment)
+                                <tr class="div-show">
+                                    <td>
+                                        <p>
+                                            {{ $comment->user()->get()->first()->name }}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            {{ $comment->content_cmt }}
+                                        </p>
+                                        <ul class="div-hidden">
+                                            <li class="col-md-offset-1 col-md-3">
+                                                <a href="javascript:;" data-toggle="modal" data-target="#modalRep-{{ $comment->id }}">Trả lời</a>
+                                            </li>                                            
+                                            <li class="col-md-3">
+                                                <a href="javascript:;" data-toggle="modal" data-target="#modalEdit-{{ $comment->id }}">Chỉnh sửa</a>
+                                            </li>                                            
+                                            <li class="col-md-3">
+                                                <a href="javascript:;" data-toggle="modal" data-target="#modalDel-{{ $comment->id }}">Xóa</a>
+                                            </li>                                            
+                                        </ul>
+                                        <!-- Modal reply -->
+                                        <div class="modal fade" id="modalRep-{{ $comment->id }}" role="dialog">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Trả lời bình luận</h4>
+                                                    </div>
+                                                    <form action="{{ route('comments.store') }}" method="POST">
+                                                        <div class="modal-body">
+                                                            {{ csrf_field() }}
+                                                            <div class="form-group">
+                                                                <label>{{ $comment->user()->get()->first()->name }}</label>
+                                                                <p>{{ $comment->content_cmt }}</p>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Trả lời:</label>
+                                                                <textarea class="form-control" rows="5" name="content_cmt"></textarea>
+                                                                <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                                                <input type="hidden" name="article_id" value="{{ $article->id }}">
+                                                                <input type="hidden" name="parent_id" value="{{ $comment->id }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-primary">Đăng</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Modal edit -->
+                                        <div class="modal fade" id="modalEdit-{{ $comment->id }}" role="dialog">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Chỉnh sửa bình luận</h4>
+                                                    </div>
+                                                    <form action="{{ route('comments.update', $comment->id) }}" method="POST">
+                                                        <div class="modal-body">
+                                                            {{ csrf_field() }}
+                                                            {{ method_field('PUT') }}
+                                                            <div class="form-group">
+                                                                <label>{{ $comment->user()->get()->first()->name }}</label>
+                                                                <textarea class="form-control" name="content_edit">{{ $comment->content_cmt }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Modal delete -->
+                                        <div class="modal fade" id="modalDel-{{ $comment->id }}" role="dialog">
+                                            <div class="modal-dialog modal-sm">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Có chắc chắn muốn xóa bình luận?</h4>
+                                                    </div>
+                                                    <form action="{{ route('comments.destroy', $comment->id) }}" method="POST">
+                                                        <div class="modal-body">
+                                                            {{ csrf_field() }}
+                                                            {{ method_field('DELETE') }}
+                                                            <p>{{ $comment->user()->get()->first()->name }}:</p>
+                                                            <p>{{ $comment->content_cmt }}</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-danger">Xóa</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endisset
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.row -->
     </div>
     <!-- /#page-wrapper -->
 @endsection
@@ -163,23 +310,6 @@
         });
         $(".js-tags").select2({
             tags: true
-        })
-        $(document).ready(function() {
-            //make url to send ajax of checkslug function
-            var url = "{{ route('articles.make-slug') }}";
-            $("[slug='input']").blur(function() {
-                var str = $("[slug='input']").val();
-                var id = 1;
-                console.log(id);
-                debugger;
-            })
-
-            // $("[slug='output']").blur(function() {
-            //     var str = $("[slug='output']").val();
-            //     var msg = $(this).parent().parent().children("p.msg-result");
-            //     var labelName = "Đường dẫn";
-            //     makeSlug(url, str, msg, labelName);
-            // })
         })
     </script>
 @endsection

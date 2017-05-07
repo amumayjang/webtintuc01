@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Trang tin tức siêu tốc</title>
 
@@ -277,31 +278,31 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Tổng quan</a>
+                            <a href="#"><i class="fa fa-dashboard fa-fw"></i> Tổng quan</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Bài viết<span class="fa arrow"></span></a>
+                            <a href="{{ route('articles.index') }}"><i class="fa fa-files-o fa-fw"></i> Bài viết<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="flot.html">Tất cá bài viết</a>
+                                    <a href="{{ route('articles.index') }}">Tất cá bài viết</a>
                                 </li>
                                 <li>
-                                    <a href="morris.html">Thêm bài viết</a>
+                                    <a href="{{ route('articles.create') }}">Thêm bài viết</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="tables.html"><i class="fa fa-comments-o fa-fw"></i> Bình luận</a>
+                            <a href="{{ route('comments.index') }}"><i class="fa fa-comments-o fa-fw"></i> Bình luận</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-book fa-fw"></i> Danh mục<span class="fa arrow"></span></a>
+                            <a href="{{ route('category.index') }}"><i class="fa fa-book fa-fw"></i> Danh mục<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="panels-wells.html">Quản lý danh mục</a>
+                                    <a href="{{ route('category.index') }}">Quản lý danh mục</a>
                                 </li>
                                 <li>
-                                    <a href="buttons.html">Thêm danh mục</a>
+                                    <a href="{{ route('category.create') }}">Thêm danh mục</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -310,13 +311,13 @@
                             <a href="#"><i class="fa fa-list-ol fa-fw"></i> Menu<span class="fa arrow"></span></a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-users fa-fw"></i> Thành viên<span class="fa arrow"></span></a>
+                            <a href="{{ route('users.manager') }}"><i class="fa fa-users fa-fw"></i> Thành viên<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="blank.html">Quản lý thành viên</a>
+                                    <a href="{{ route('users.manager') }}">Quản lý thành viên</a>
                                 </li>
                                 <li>
-                                    <a href="login.html">Thêm thành viên</a>
+                                    <a href="{{ route('users.create') }}">Thêm thành viên</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
