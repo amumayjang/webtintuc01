@@ -10,6 +10,7 @@ use App\Repositories\TagRepositoryEloquent;
 use App\Repositories\ArticleTagRepositoryEloquent;
 use App\Repositories\CommentRepositoryEloquent;
 use Auth;
+use App\Http\Requests\CreateArticleRequest;
 
 
 class ArticlesController extends Controller
@@ -64,7 +65,7 @@ class ArticlesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateArticleRequest $request)
     {
         $nameImage = '';
         if ($request->hasFile('thumbnail_image')) {
@@ -72,8 +73,9 @@ class ArticlesController extends Controller
         }
         $this->articlesReposi->create([
                 'title' => $request->title,
+                'description' => $request->description,
                 'content' => $request->content,
-                'slug' => $request->slug,
+                'slug' => str_slug($request->slug),
                 'user_id' => Auth::id(),
                 'cate_id' => $request->cate_id,
                 'time_public' => $request->time_public,

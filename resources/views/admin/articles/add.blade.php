@@ -19,6 +19,14 @@
         </div>
         <!-- /.row -->
         <div class="row">
+            @if(count($errors) > 0)
+                <ul class="alert alert-danger alert-dismissable">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                    @foreach ($errors->all() as $er)
+                        <li>{{ $er }}</li>
+                    @endforeach
+                </ul>
+            @endif
             <form action="{{ route('articles.store') }}" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="col-lg-9">
@@ -30,12 +38,12 @@
                             <div class="row">
                                 <div class="panel-heading">
                                     <div class="form-group">
-                                        <label>Tiêu đề:</label>
+                                        <label>Tiêu đề</label>
                                         <input type="text" class="form-control" slug="input" name="title">
                                         <p class="text-danger msg-result"></p>
                                     </div>
                                     <div class="form-group">
-                                        <label>Đường dẫn:</label> <br>
+                                        <label>Đường dẫn</label> <br>
                                         <div class="col-lg-3">
                                             <input type="text" class="form-control input-sm" value="{{ url('/') }}" disabled>
                                         </div>                                        
@@ -46,6 +54,10 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
+                                    <div class="form-group">
+                                        <label class="control-label">Tóm tắt nội dung</label>
+                                        <textarea class="form-control" name="description" rows="3"></textarea>
+                                    </div>
                                     <div class="form-group">
                                         <textarea name="content"></textarea>
                                         <script type="text/javascript">ckeditor("content")</script>

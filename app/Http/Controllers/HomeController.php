@@ -24,7 +24,7 @@ class HomeController extends Controller
     	 */
     	$articlesHot = $this->articleRepository->scopeQuery(function($query){
     		return $query->orderBy('time_public','desc');
-		})->findByField('hot', 1)->take(3);
+		})->findByField('hot', 1)->take(10);
 
     	/**
     	 * get article and sort descending follow time_public field

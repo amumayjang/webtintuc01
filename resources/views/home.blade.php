@@ -7,18 +7,27 @@
 				<p>Đồng hồ</p>
 				<div class="box-hot">
 					<a href="">
-						<img src="" width="327" height="245">
+						<img src="{{ asset('public/admin/uploads/images/thumbnail-articles/'.$articlesHot->first()->imgThumb) }}" height="245">
 					</a>
-					<h2></h2>
+					<h4>
+						<a href="">{{ $articlesHot->first()->title }}</a>
+					</h4>
 					<p>
+						{{ $art->description }}
+						<br>
 						
-						<a href=""></a>
-						<a href=""></a>
 					</p>
 				</div>
 			</div>
 			<div class="col-sm-5">
-				
+				<p>Tin Hot</p>
+				<ul style="margin: 0; list-style: none;padding: 0">
+					@foreach ($articlesHot as $art)
+						<li>
+							<a href="">{{ $art->title }}</a>
+						</li>
+					@endforeach
+				</ul>
 			</div>
 		</div>
 		<div class="col-sm-4" >
