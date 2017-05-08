@@ -11,7 +11,8 @@
 |
 */
 
-Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeController@index')->name('/');
+
 Route::get('contact', function() {
 	return view('contact');
 });
@@ -59,3 +60,4 @@ Route::group(['prefix' => 'admin'], function () {
 	});
 
 });
+Route::get('/{slug}', 'HomeController@single');

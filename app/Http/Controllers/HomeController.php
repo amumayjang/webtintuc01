@@ -16,9 +16,34 @@ class HomeController extends Controller
 	{
 		$this->articleRepository = $articleRepository;
 	}
+
     public function index()
     {
-    	$articlesHot = $this->articleRepository->findByField('hot', 1)->sortByDesc('time_public')->take(3);
-    	return view('home', compact('articlesHot'));
+    	/**
+    	 * get three HOT article and sort descending follow time_public field
+    	 */
+    	$articlesHot = $this->articleRepository->scopeQuery(function($query){
+    		return $query->orderBy('time_public','desc');
+		})->findByField('hot', 1)->take(3);
+
+    	/**
+    	 * get article and sort descending follow time_public field
+    	 */
+		$articles = $this->articleRepository->scopeQuery(function($query){
+			return $query->orderBy('time_public', 'desc');
+		})->all()->take(5);
+
+		
+    	return view('home', compact('articlesHot', 'articles'));
+    }
+
+    public function single($slug)
+    {
+    	$article = $this->articleRepository->findByField('slug', $slug)->first();
+    	if ($article) {
+    		var_dump($article);
+    	} else {
+    		return view('notfound');
+    	}
     }
 }
