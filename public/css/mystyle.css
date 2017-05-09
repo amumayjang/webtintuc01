@@ -1,0 +1,9 @@
+.hot-news {
+	border-left: 2px solid #9c9797;
+}
+.hot-news li {
+	border-bottom: 1px solid #9c9797;
+}
+.hot-news li:last-child {
+	border: none;
+}

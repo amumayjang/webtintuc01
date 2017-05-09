@@ -7,21 +7,21 @@
 				<p>Đồng hồ</p>
 				<div class="box-hot">
 					<a href="">
-						<img src="{{ asset('public/admin/uploads/images/thumbnail-articles/'.$articlesHot->first()->imgThumb) }}" height="245">
+						<img src="{{ asset('public/admin/uploads/images/thumbnail-articles/'.$articles->first()->imgThumb) }}" height="245">
 					</a>
 					<h4>
-						<a href="">{{ $articlesHot->first()->title }}</a>
+						<a href="">{{ $articles->first()->title }}</a>
 					</h4>
 					<p>
-						{{ $art->description }}
+						{{ $articles->first()->description }}
 						<br>
 						
 					</p>
 				</div>
 			</div>
 			<div class="col-sm-5">
-				<p>Tin Hot</p>
-				<ul style="margin: 0; list-style: none;padding: 0">
+				<p class="label label-danger">Tin Hot</p>
+				<ul class="hot-news">
 					@foreach ($articlesHot as $art)
 						<li>
 							<a href="">{{ $art->title }}</a>
@@ -31,6 +31,16 @@
 			</div>
 		</div>
 		<div class="col-sm-4" >
+			<div class="col-sm-12">
+				<a href="">
+					<img src="{{ asset('public/images/1.jpg') }}">
+				</a>
+			</div>
+			<div class="col-sm-12" style="margin-top: 20px">
+				<a href="">
+					<img src="{{ asset('public/images/2.jpg') }}">
+				</a>
+			</div>
 		</div>
 	</div>
 </div>

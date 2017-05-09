@@ -25,7 +25,7 @@ class CreateArticleRequest extends FormRequest
     {
         return [
             'title' => 'required|max:100',
-            'slug' => 'required',
+            'slug' => 'required|unique:articles',
             'description' => 'required|max:300',
             'content' => 'required',
             'file' => 'image',
@@ -42,6 +42,7 @@ class CreateArticleRequest extends FormRequest
             'title.max' => 'Độ dài tiêu đề không quá 100 ký tự',
             'description.max' => 'Mô tả không được dài quá 300 ký tự',
             'file.image' => 'Tải lên tệp tin ở định dạng ảnh',
+            'slug.unique' => 'Đường dẫn tới bài viết đã tồn tại'
         ];
     }
 }

@@ -38,16 +38,13 @@
                             <div class="row">
                                 <div class="panel-heading">
                                     <div class="form-group">
-                                        <label>Tiêu đề</label>
-                                        <input type="text" class="form-control" slug="input" name="title">
+                                        <input type="text" class="form-control" slug="input" name="title" placeholder="Tiêu đề">
                                         <p class="text-danger msg-result"></p>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Đường dẫn</label> <br>
-                                        <div class="col-lg-3">
-                                            <input type="text" class="form-control input-sm" value="{{ url('/') }}" disabled>
-                                        </div>                                        
-                                        <div class="col-lg-9">
+                                    <div class="form-group">                                        
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Đường dẫn:</div>
+                                            <div class="input-group-addon">{{ asset('/') }}</div>
                                             <input type="text" class="form-control input-sm" slug="output" name="slug">
                                         </div>
                                         <p class="text-danger msg-result"></p>
@@ -55,8 +52,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="form-group">
-                                        <label class="control-label">Tóm tắt nội dung</label>
-                                        <textarea class="form-control" name="description" rows="3"></textarea>
+                                        <textarea class="form-control" name="description" rows="3" placeholder="Tóm tắt nội dung"></textarea>
                                     </div>
                                     <div class="form-group">
                                         <textarea name="content"></textarea>

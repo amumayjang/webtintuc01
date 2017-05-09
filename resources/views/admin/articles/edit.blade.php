@@ -31,21 +31,21 @@
                             <div class="row">
                                 <div class="panel-heading">
                                     <div class="form-group">
-                                        <label>Tiêu đề:</label>
-                                        <input type="text" slug="output" class="form-control" value="{{ $article->title }}" name="title">
+                                        <input type="text" slug="output" class="form-control" placeholder="Tiêu đề" value="{{ $article->title }}" name="title">
                                     </div>
                                     <div class="form-group">
-                                        <label>Đường dẫn:</label> <br>
-                                        <div class="col-lg-3">
-                                            <input type="text" class="form-control input-sm" value="{{ url('/') }}" disabled>
-                                        </div>                                        
-                                        <div class="col-lg-9">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">Đường dẫn:</div>
+                                            <div class="input-group-addon">{{ asset('/') }}</div>
                                             <input type="text" value="{{ $article->slug }}" class="form-control input-sm" slug="output" name="slug">
                                         </div>
                                         <p class="text-danger msg-result"></p>
                                     </div>
                                 </div>
                                 <div class="panel-body">
+                                    <div class="form-group">
+                                        <textarea class="form-control" rows="3" name="description" placeholder="Mô tả bài viết">{{ $article->description }}</textarea>
+                                    </div>
                                     <div class="form-group">
                                         <textarea name="content">{{ $article->content }}</textarea>
                                         <script type="text/javascript">ckeditor("content")</script>
@@ -141,8 +141,10 @@
                 </div>
                 <!-- /.col-lg-3 -->
                 <div class="pull-right">
-                    <button type="submit" class="btn btn-success">Thêm</button>
-                    <button type="reset" class="btn btn-default">Lưu</button>
+                    <button type="submit" class="btn btn-success">Cập nhật</button>
+                    <a href="{{ route('articles.index') }}">
+                        <button type="button" class="btn btn-default">Hủy</button>
+                    </a>
                 </div>
             </form>
         </div>

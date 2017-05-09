@@ -139,22 +139,24 @@ class ArticlesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $nameImage = '';
         $article = $this->articlesReposi->find($id);
+        $this->articlesReposi->update([
+                'title' => $request->title,
+                'description' => $request->description,
+                'content' => $request->content,
+                'slug' => str_slug($request->slug),
+                'cate_id' => $request->cate_id,
+                'hot' => $request->hot,
+            ], $id);
         if ($request->hasFile('thumbnail_image')) {
             $nameImage = files_upload('public/admin/uploads/images/thumbnail-articles', $request->file('thumbnail_image'));
             if ($article->imgThumb != "") {
                 unlink('public/admin/uploads/images/thumbnail-articles/'.$article->imgThumb);
             }
+            $this->articlesReposi->update([
+                    'imgThumb' => $nameImage
+                ], $id);
         }
-        $this->articlesReposi->update([
-                'title' => $request->title,
-                'content' => $request->content,
-                'slug' => $request->slug,
-                'cate_id' => $request->cate_id,
-                'hot' => $request->hot,
-                'imgThumb' => $nameImage,
-            ], $id);
         $findOldTag = $this->articleTagReposi->findByField('article_id', $id);
         foreach ($findOldTag as $tag) {
             $tag->delete();
@@ -177,7 +179,7 @@ class ArticlesController extends Controller
                 }
             }
         }
-        return redirect()->route('articles.index');
+        return redirect()->route('articles.index')->with(['flash_message' => 'Cập nhật bài viết thành công!', 'flash_level' => 'success']);
     }
 
     /**
@@ -192,7 +194,12 @@ class ArticlesController extends Controller
         return redirect()->route('articles.index')->with(['flash_message' => 'Xóa bài viết thành công!', 'flash_level' => 'success']);
     }
 
-//create slug for article
+    /**
+     * Check and Create the slug of article from string input.
+     *
+     * @param 
+     * @return json: true and slug if slug doesn't exist and false if slug exist
+     */
     public function makeSlug()
     {
 
