@@ -29,7 +29,7 @@ class HomeController extends Controller
             return $query->orderBy('time_public', 'desc');
         });
     	/**
-    	 * get three HOT article
+    	 * get HOT article
     	 */
     	$hotNews = $allArticles->findWhere(['status' => 1, 'hot' => 1])->take(10);
 
@@ -37,11 +37,20 @@ class HomeController extends Controller
     	 * get all article new
     	 */
 		$news = $allArticles->findByField('status', 1);
+        $popularNews = $this->articleRepository->scopeQuery(function($query){
+            return $query->orderBy('view', 'desc');
+        })->findByField('status', 1);
 
         $cateHead = $this->cateRepository->findByField('cate_name', 'Xã hội')->first();
         $newsHead = $allArticles->findWhere(['status' => 1, 'cate_id' => $cateHead->id]);
 
-    	return view('home', compact('hotNews', 'news', 'newsHead'));
+        $cateSecond = $this->cateRepository->findByField('cate_name', 'Kinh tế')->first();
+        $newsSecond = $allArticles->findWhere(['status' => 1, 'cate_id' => $cateSecond->id]);
+
+        $cateBot = $this->cateRepository->findByField('cate_name', 'Thể thao')->first();
+        $newsBot = $allArticles->findWhere(['status' => 1, 'cate_id' => $cateBot->id]);
+
+    	return view('home', compact('hotNews', 'news', 'newsHead', 'newsSecond', 'newsBot', 'popularNews'));
     }
 
     public function single($slug)

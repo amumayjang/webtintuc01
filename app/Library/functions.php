@@ -1,5 +1,10 @@
 <?php 
-//Show select role in views
+/**
+ * [show_roles show all role in select input]
+ * @param  [type]  $roles  [all role has]
+ * @param  integer $select [role want select default]
+ * @return [type]          [list role in option tag]
+ */
 	function show_roles ($roles, $select = 0)
 	{
 		foreach ($roles as $role) {
@@ -11,7 +16,12 @@
 		}
 	}
 
-//upload image ($file) to server (into directory $dir) and return file name save
+/**
+ * [files_upload upload image]
+ * @param  string $dir  [directory to foder contain of image]
+ * @param  [type] $file [file of input]
+ * @return [type]       [name file just upload successfully]
+ */
 	function files_upload($dir = 'public/admin/uploads/', $file)
 	{
         $fileName = str_random(5).'_'.$file->getClientOriginalName();
@@ -22,7 +32,14 @@
         return $fileName;
 	}
 
-//show category option of select input. Input are list category ($cates) and selected default ($select)
+/**
+ * [show_cates show all category in select tag]
+ * @param  [type]  $cates  [all category]
+ * @param  integer $select [id category need select]
+ * @param  integer $parent [id parent of category default = 0]
+ * @param  string  $str    [string show when category has child]
+ * @return [type]          [list category in <li> tag]
+ */
 	function show_cates($cates, $select = 0, $parent = 0, $str = '')
 	{
 		foreach ($cates as $cate) {
@@ -39,7 +56,13 @@
 		}
 	}
 
-	//Show article relate
+	/**
+	 * [relateNews show relate news]
+	 * @param  [type] $tags    [all tag of article]
+	 * @param  [type] $cate    [category of article]
+	 * @param  [type] $numNews [number news relate of article]
+	 * @return [type]          [list relate news in tag <li>]
+	 */
 	function relateNews($tags, $cate, $numNews)
 	{
 		$countNewsOfTag = 0;
@@ -50,7 +73,7 @@
 						echo "<li><a href='".asset('/'.$artOfTag->slug)."'>".$artOfTag->title."</a></li>";
 						$countNewsOfTag++;
 						if ($countNewsOfTag == $numNews) {
-							break;
+							break 2;
 						}
 					}
 				}
