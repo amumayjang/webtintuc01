@@ -43,11 +43,33 @@
                                         <td class="text-center">{{ $user->created_at }}</td>
                                         <td class="text-center">
                                             <a href="{{ route('users.edit', $user->id) }}">
-                                                <button type="button" class="btn btn-outline btn-info">Sửa</button>
+                                                <button type="button" class="btn btn-info">Sửa</button>
                                             </a>                                        
-                                            <a href="{{ route('users.delete', $user->id) }}">
-                                                <button type="button" class="btn btn-outline btn-danger">Xóa</button>
-                                            </a>
+                                            <button type="button" data-toggle="modal" data-target="#myModal-{{ $user->id }}" class="btn btn-danger">Xóa</button>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="myModal-{{ $user->id }}" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title">Bạn có chắc muốn xóa người dùng?</h4>
+                                                        </div>
+                                                        <form action="{{ route('users.delete', $user->id) }}" method="post">
+                                                            <div class="modal-body">
+                                                                <label>{{ $user->name }}</label>
+                                                                {{ csrf_field() }}
+                                                                <input type="hidden" name="_method" value="DELETE">
+                                                                <input type="hidden" name="id" value="{{ $user->id }}">
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                                                <button type="submit" class="btn btn-danger">Xóa</button>
+                                                            </div>
+                                                        </form>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div>
+                                            <!-- /.modal -->
                                         </td>
                                     </tr>
                                 @endforeach

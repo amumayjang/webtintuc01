@@ -90,7 +90,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Ảnh đại diện</label>
-                                        <input type="file" name="thumbnail_image">
+                                        <input type="file" name="thumbnail">
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label"><i class="fa fa-calendar"></i>Thời gian xuất bản

@@ -19,9 +19,18 @@
         </div>
         <!-- /.row -->
         <div class="row">
+            @if(count($errors) > 0)
+                <ul class="alert alert-danger alert-dismissable">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                    @foreach ($errors->all() as $er)
+                        <li>{{ $er }}</li>
+                    @endforeach
+                </ul>
+            @endif
             <form action="{{ route('articles.update', $article->id) }}" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 {{ method_field('PUT') }}
+                <input type="hidden" name="id" value="{{ $article->id }}">
                 <div class="col-lg-9">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
@@ -37,7 +46,7 @@
                                         <div class="input-group">
                                             <div class="input-group-addon">Đường dẫn:</div>
                                             <div class="input-group-addon">{{ asset('/') }}</div>
-                                            <input type="text" value="{{ $article->slug }}" class="form-control input-sm" slug="output" name="slug">
+                                            <input type="text" value="{{ $article->slug }}" class="form-control input-sm" slug="output" name="slug" placeholder="Đường dẫn">
                                         </div>
                                         <p class="text-danger msg-result"></p>
                                     </div>
@@ -47,7 +56,7 @@
                                         <textarea class="form-control" rows="3" name="description" placeholder="Mô tả bài viết">{{ $article->description }}</textarea>
                                     </div>
                                     <div class="form-group">
-                                        <textarea name="content">{{ $article->content }}</textarea>
+                                        <textarea name="content" placeholder="Nội dung">{{ $article->content }}</textarea>
                                         <script type="text/javascript">ckeditor("content")</script>
                                     </div>
                                 </div>
@@ -88,7 +97,7 @@
                                         @else
                                             <p class="help-block">Chưa có! Hãy thêm ảnh</p>
                                         @endif
-                                        <input type="file" name="thumbnail_image">
+                                        <input type="file" name="thumbnail">
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label"><i class="fa fa-calendar"></i>Thời gian xuất bản

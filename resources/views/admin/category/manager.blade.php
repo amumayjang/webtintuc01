@@ -47,6 +47,7 @@
                                         <td class="text-center">{{ $cate->parent()->first()['cate_name'] }}</td>
                                         <td class="text-center">{{ $cate->description }}</td>
                                         <td class="text-center">
+                                            <a href="{{ asset('/'.$cate->slug) }}"></a>
                                             <a href="{{ route('category.edit', $cate->id) }}">
                                                 <button type="button" class="btn btn-info">Sửa</button>
                                             </a>                                        
@@ -73,7 +74,7 @@
                                                         </form>
                                                     </div><!-- /.modal-content -->
                                                 </div><!-- /.modal-dialog -->
-                                            </div><!-- /.modal -->
+                                            </div>
                                             <!-- /.modal -->
                                         </td>
                                     </tr>

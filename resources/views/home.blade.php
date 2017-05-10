@@ -6,25 +6,29 @@
 			<div class="col-sm-7">
 				<p>Đồng hồ</p>
 				<div class="box-hot">
-					<a href="">
-						<img src="{{ asset('public/admin/uploads/images/thumbnail-articles/'.$articles->first()->imgThumb) }}" height="245">
+					<a href="{{ asset('/'.$news->first()->slug) }}">
+						<img src="{{ asset('public/admin/uploads/images/thumbnail-articles/'.$news->first()->imgThumb) }}" height="245">
 					</a>
 					<h4>
-						<a href="">{{ $articles->first()->title }}</a>
+						<a href="{{ asset('/'.$news->first()->slug) }}">{{ $news->first()->title }}</a>
 					</h4>
 					<p>
-						{{ $articles->first()->description }}
+						{{ $news->first()->description }}
 						<br>
-						
+						<ul>
+							@php
+								relateNews($news->first()->tags()->get(), $news->first()->cate()->first(), 3)
+							@endphp
+						</ul>
 					</p>
 				</div>
 			</div>
 			<div class="col-sm-5">
 				<p class="label label-danger">Tin Hot</p>
 				<ul class="hot-news">
-					@foreach ($articlesHot as $art)
+					@foreach ($hotNews as $hotNew)
 						<li>
-							<a href="">{{ $art->title }}</a>
+							<a href="{{ asset('/'.$hotNew->slug) }}">{{ $hotNew->title }}</a>
 						</li>
 					@endforeach
 				</ul>
@@ -51,27 +55,27 @@
 		<div id="main-content"><!-- background not working -->
 			<div class="col-md-6">
 				<div class="box wrap-vid">
+					<div class="box-header header-photo">
+						<h2>{{ $newsHead->first()->cate()->first()->cate_name }}</h2>
+					</div>
 					<div class="zoom-container">
-						<div class="zoom-caption">
-							<span class="youtube">Youtube</span>
-							<a href="single.html">
-								<i class="fa fa-play icon-play" style="color: #fff"></i>
-							</a>
-							<p>Video's Name</p>
-						</div>
-						<img src="images/4.jpg" />
+						<img src="{{ asset('public/admin/uploads/images/thumbnail-articles/'.$newsHead->first()->imgThumb) }}" />
 					</div>
-					<h3 class="vid-name"><a href="#">Video's Name</a></h3>
+					<h3 class="vid-name"><a href="{{ asset('/'.$newsHead->first()->slug) }}">{{ $newsHead->first()->title }}</a></h3>
 					<div class="info">
-						<h5>By <a href="#">Kelvin</a></h5>
-						<span><i class="fa fa-calendar"></i>25/3/2015</span> 
-						<span><i class="fa fa-heart"></i>1,200</span>
+						<h5>Đăng bởi: <a href="#">{{ $newsHead->first()->author()->first()->name }}</a></h5>
+						<span><i class="fa fa-calendar"></i>{{ $newsHead->first()->time_public }}</span> 
 					</div>
-					<p class="more">Aenean feugiat in ante et blandit. Vestibulum posuere molestie risus, ac interdum magna porta non. Pellentesque rutrum fringilla elementum. Curabitur tincidunt porta lorem vitae accumsan.Aenean feugiat in ante et blandit. Vestibulum posuere molestie risus, ac interdum magna porta non.ac interdum magna porta non. Pellentesque rutrum fringilla elementum. Curabitur tincidunt porta lorem vitae accumsan</p>
+					<p class="more">{{ $newsHead->first()->description }}</p>
+					<ul>
+						@php
+							relateNews($newsHead->first()->tags()->get(), $newsHead->first()->cate()->first(), 3)
+						@endphp
+					</ul>
 				</div>
 				<div class="box">
 					<div class="box-header header-vimeo">
-						<h2>Vimeo</h2>
+						<h2>Thế giới</h2>
 					</div>
 					<div class="box-content">
 						<div class="row">
@@ -207,7 +211,7 @@
 				</div>
 				<div class="box">
 					<div class="box-header header-photo">
-						<h2>Photos</h2>
+						<h2>Thư viện ảnh</h2>
 					</div>
 					<div class="box-content">
 						<div id="owl-demo-2" class="owl-carousel">
@@ -236,7 +240,7 @@
 				</div>
 				<div class="box">
 					<div class="box-header header-natural">
-						<h2>Natural</h2>
+						<h2>Thể thao</h2>
 					</div>
 					<div class="box-content">
 						<div class="row">

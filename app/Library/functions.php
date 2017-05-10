@@ -39,4 +39,36 @@
 		}
 	}
 
+	//Show article relate
+	function relateNews($tags, $cate, $numNews)
+	{
+		$countNewsOfTag = 0;
+		foreach ($tags as $tag) {
+			if (count($tag->articles()->get()) > 0) {
+				foreach ($tag->articles()->get() as $artOfTag) {
+					if ($artOfTag->status == 1) {
+						echo "<li><a href='".asset('/'.$artOfTag->slug)."'>".$artOfTag->title."</a></li>";
+						$countNewsOfTag++;
+						if ($countNewsOfTag == $numNews) {
+							break;
+						}
+					}
+				}
+			}
+		}
+		if ($countNewsOfTag < $numNews) {
+			if (count($cate->articles()->get()) > 0) {
+				foreach ($cate->articles()->get() as $artOfCate) {
+					if ($artOfCate->status == 1) {
+						echo "<li><a href='".asset('/'.$artOfCate->slug)."'>".$artOfCate->title."</a></li>";
+						$countNewsOfTag++;
+						if ($countNewsOfTag == $numNews) {
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
  ?>

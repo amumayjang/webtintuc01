@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class CreateArticleRequest extends FormRequest
+class UpdateArticleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +25,11 @@ class CreateArticleRequest extends FormRequest
     public function rules()
     {
         return [
+            'slug' => [Rule::unique('articles')->ignore($this->get('id')), 'required'],
             'title' => 'required|max:100',
-            'slug' => 'required|unique:articles',
             'description' => 'required|max:300',
             'content' => 'required',
-            'thumbnail' => 'required|image|max:5000',
+            'thumbnail' => 'image|max:5000',
         ];
     }
 
@@ -41,9 +42,8 @@ class CreateArticleRequest extends FormRequest
             'content.required' => 'Vui lòng thêm nội dung cho bài viết!',
             'title.max' => 'Độ dài tiêu đề không quá 100 ký tự',
             'description.max' => 'Mô tả không được dài quá 300 ký tự',
-            'thumbnail.required' => 'Vui lòng thêm ảnh đại diện cho bài viết',
             'thumbnail.image' => 'Tải lên tệp tin ở định dạng ảnh jpeg, png, bmp, gif, hoặc svg',
-            'thumbnail.max' => 'Tải lên tệp tin ở định dạng ảnh dưới 5MB',
+            'thumbnail.max' => 'Vui lòng tải lên tệp tin ở dạng ảnh dưới 5MB',
             'slug.unique' => 'Đường dẫn tới bài viết đã tồn tại'
         ];
     }

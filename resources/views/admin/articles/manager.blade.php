@@ -44,6 +44,10 @@
                                     <tr class="odd gradeX div-show">
                                         <td class="center">{{ $article->title }}
                                             <p class="text-center div-hidden">
+                                                <a href="{{ asset('/'.$article->slug) }}">
+                                                    <button type="button" class="btn btn-default"><i class="fa fa-eye"></i>
+                                                    </button>
+                                                </a>
                                                 <a href="{{ route('articles.edit', $article->id) }}">
                                                     <button type="button" class="btn btn-info"><i class="fa fa-pencil"></i>
                                                     </button>

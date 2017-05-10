@@ -11,6 +11,7 @@ use App\Repositories\ArticleTagRepositoryEloquent;
 use App\Repositories\CommentRepositoryEloquent;
 use Auth;
 use App\Http\Requests\CreateArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
 
 
 class ArticlesController extends Controller
@@ -68,9 +69,11 @@ class ArticlesController extends Controller
     public function store(CreateArticleRequest $request)
     {
         $nameImage = '';
-        if ($request->hasFile('thumbnail_image')) {
-            $nameImage = files_upload('public/admin/uploads/images/thumbnail-articles', $request->file('thumbnail_image'));
+        //upload file image thumbnail of article and return name file
+        if ($request->hasFile('thumbnail')) {
+            $nameImage = files_upload('public/admin/uploads/images/thumbnail-articles', $request->file('thumbnail'));
         }
+        //create article
         $this->articlesReposi->create([
                 'title' => $request->title,
                 'description' => $request->description,
@@ -82,7 +85,9 @@ class ArticlesController extends Controller
                 'hot' => $request->hot,
                 'imgThumb' => $nameImage,
             ]);
+        //get current article
         $lastArticle = $this->articlesReposi->all()->last();
+        //create tag of article
         if ($request->has('name_tag')) {
             foreach ($request->name_tag as $tag) {
                 $tagCheck = $this->tagReposi->findByField('name_tag', $tag)->first();
@@ -137,9 +142,10 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateArticleRequest $request, $id)
     {
-        $article = $this->articlesReposi->find($id);
+        $article = $this->articlesReposi->find($id);//find article need update
+        //update artilce
         $this->articlesReposi->update([
                 'title' => $request->title,
                 'description' => $request->description,
@@ -148,8 +154,9 @@ class ArticlesController extends Controller
                 'cate_id' => $request->cate_id,
                 'hot' => $request->hot,
             ], $id);
-        if ($request->hasFile('thumbnail_image')) {
-            $nameImage = files_upload('public/admin/uploads/images/thumbnail-articles', $request->file('thumbnail_image'));
+        //update thumbnail image
+        if ($request->hasFile('thumbnail')) {
+            $nameImage = files_upload('public/admin/uploads/images/thumbnail-articles', $request->file('thumbnail'));
             if ($article->imgThumb != "") {
                 unlink('public/admin/uploads/images/thumbnail-articles/'.$article->imgThumb);
             }
@@ -157,10 +164,12 @@ class ArticlesController extends Controller
                     'imgThumb' => $nameImage
                 ], $id);
         }
+        //find old tag of article and delete that tag 
         $findOldTag = $this->articleTagReposi->findByField('article_id', $id);
         foreach ($findOldTag as $tag) {
             $tag->delete();
         }
+        //create new tag for article
         if ($request->has('name_tag')) {
             foreach ($request->name_tag as $tag) {
                 $tagCheck = $this->tagReposi->findByField('name_tag', $tag)->first();
