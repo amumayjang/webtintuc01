@@ -50,14 +50,11 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 Route::get('/', 'HomeController@index')->name('/');
+Route::get('log-out', ['as' => 'frontlogout', 'uses' => 'LoginController@logoutUser']);
+Route::get('sign-in', ['as' => 'getSignIn', 'uses' => 'LoginController@getSignIn']);
+Route::post('sign-in', ['as' => 'signIn', 'uses' => 'LoginController@signIn']);
+Route::get('sign-up', ['as' => 'getSignUp', 'uses' => 'LoginController@getSignUp']);
+Route::post('sign-up', ['as' => 'signUp', 'uses' => 'LoginController@signUp']);
+Route::post('comments', ['as' => 'postComment', 'uses' => 'HomeController@postComment']);
 
-Route::get('contact', function() {
-	return view('contact');
-});
-Route::get('archive', function() {
-	return view('archive');
-});
-Route::get('single', function() {
-	return view('single');
-});
 Route::get('/{slug}', 'HomeController@single');

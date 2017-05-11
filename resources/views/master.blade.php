@@ -49,11 +49,17 @@
 					<strong>Chào mừng bạn đến với DK NEWS!</strong>
 				</div>
 				<div class="col-md-6">
-					<ul class="list-inline top-link link">
-						<li><a href="{{ route('/') }}"><i class="fa fa-home"></i> Trang chủ</a></li>
-						<li><a href="contact.html"><i class="fa fa-comments"></i> Liên hệ</a></li>
-						<li><a href="#"><i class="fa fa-question-circle"></i> FAQ</a></li>
-					</ul>
+					@if (Auth::user() !== null)
+						<ul class="list-inline top-link link">
+							<li><a href="#"> Xin chào {{ Auth::user()->name }}</a></li>
+							<li><a href="{{ route('frontlogout') }}"> Thoát</a></li>
+						</ul>
+					@else
+						<ul class="list-inline top-link link">
+							<li><a href="{{ route('getSignIn') }}"> Đăng nhập</a></li>
+							<li><a href="{{ route('getSignUp') }}"> Đăng ký</a></li>
+						</ul>
+					@endif
 				</div>
 			</div>
 		</div>

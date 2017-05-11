@@ -4,3 +4,8 @@
 .hot-news li:last-child {
 	border: none;
 }
+ul.list-comments {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}

@@ -5,19 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Repositories\ArticleRepositoryEloquent;
 use App\Repositories\CategoryRepositoryEloquent;
+use App\Repositories\CommentRepositoryEloquent;
 
 class HomeController extends Controller
 {
     protected $articleRepository;
-	protected $cateRepository;
-/**
- * get Model
- * @param ArticleRepositoryEloquent $articleRepository [Article Model]
- */
-	public function __construct(ArticleRepositoryEloquent $articleRepository, CategoryRepositoryEloquent $cateRepository)
+    protected $cateRepository;
+	protected $commentRepository;
+	public function __construct(ArticleRepositoryEloquent $articleRepository, CategoryRepositoryEloquent $cateRepository, CommentRepositoryEloquent $commentRepository)
 	{
         $this->articleRepository = $articleRepository;
-		$this->cateRepository = $cateRepository;
+        $this->cateRepository = $cateRepository;
+		$this->commentRepository = $commentRepository;
 	}
 
     public function index()
@@ -52,14 +51,38 @@ class HomeController extends Controller
 
     	return view('home', compact('hotNews', 'news', 'newsHead', 'newsSecond', 'newsBot', 'popularNews'));
     }
-
+    /**
+     * [single show article on signle page]
+     * @param  [type] $slug [slug of article]
+     * @return [type]       [view]
+     */
     public function single($slug)
     {
-    	$article = $this->articleRepository->findByField('slug', $slug)->first();
-    	if ($article) {
-    		var_dump($article);
-    	} else {
-    		return view('notfound');
+    	$news = $this->articleRepository->findByField('slug', $slug)->first();
+        $recentNews = $this->articleRepository->scopeQuery(function($query) {
+            return $query->orderBy('time_public', 'desc');
+        })->all();
+        $comments = $this->commentRepository->scopeQuery(function($query) {
+            return $query->orderBy('created_at', 'desc');
+        })->all();
+    	if ($news) {
+    		return view('single', compact('news', 'recentNews', 'comments'));
     	}
+        return view('notfound');
     }
+    /**
+     * [postComment create comment from signle page]
+     * @param  Request $request [description]
+     * @return [type]           [back previours page]
+     */
+    public function postComment(Request $request)
+    {
+        $this->commentRepository->create([
+                'content_cmt' => $request->comment,
+                'user_id' => $request->user_id,
+                'article_id' => $request->article_id,
+            ]);
+        return redirect()->back();
+    }
+
 }
