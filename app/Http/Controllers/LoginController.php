@@ -34,7 +34,7 @@ class LoginController extends Controller
         $newPost = $this->articleRepository->scopeQuery(function($query) {
             return $query->orderBy('time_public', 'desc');
         })->all();
-        return view('sign-in', compact('newPost'));
+        return view('front.sign-in', compact('newPost'));
     }
 
     public function signIn(Request $request)
@@ -51,7 +51,7 @@ class LoginController extends Controller
         $newPost = $this->articleRepository->scopeQuery(function($query) {
             return $query->orderBy('time_public', 'desc');
         })->all();
-        return view('sign-up', compact('newPost'));
+        return view('front.sign-up', compact('newPost'));
     }
 
     public function signUp(SignUpRequest $request)

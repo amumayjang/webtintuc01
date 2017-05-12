@@ -49,7 +49,7 @@ class HomeController extends Controller
         $cateBot = $this->cateRepository->findByField('cate_name', 'Thể thao')->first();
         $newsBot = $allArticles->findWhere(['status' => 1, 'cate_id' => $cateBot->id]);
 
-    	return view('home', compact('hotNews', 'news', 'newsHead', 'newsSecond', 'newsBot', 'popularNews'));
+    	return view('front.home', compact('hotNews', 'news', 'newsHead', 'newsSecond', 'newsBot', 'popularNews'));
     }
     /**
      * [single show article on signle page]
@@ -66,7 +66,7 @@ class HomeController extends Controller
             return $query->orderBy('created_at', 'desc');
         })->all();
     	if ($news) {
-    		return view('single', compact('news', 'recentNews', 'comments'));
+    		return view('front.single', compact('news', 'recentNews', 'comments'));
     	}
         return view('notfound');
     }
