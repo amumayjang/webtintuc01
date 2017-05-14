@@ -41,7 +41,7 @@
                                     <div class="form-group">
                                         <label>Danh mục cha</label>
                                         <select name="parent_id"  class="form-control">
-                                            <option value="">Lựa chọn danh mục cha...</option>
+                                            <option value="0">Lựa chọn danh mục cha...</option>
                                             @php
                                                show_cates($cates)
                                             @endphp

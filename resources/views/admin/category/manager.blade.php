@@ -43,11 +43,11 @@
                                 @foreach ($cates as $cate)
                                     <tr class="odd gradeX">
                                         <td class="center">{{ $cate->cate_name }}</td>
-                                        <td class="text-center">{{ $cate->slug }}</td>
+                                        <td class="text-center">{{ $cate->slug_cate }}</td>
                                         <td class="text-center">{{ $cate->parent()->first()['cate_name'] }}</td>
-                                        <td class="text-center">{{ $cate->description }}</td>
+                                        <td class="text-center">{{ $cate->description_cate }}</td>
                                         <td class="text-center">
-                                            <a href="{{ asset('/'.$cate->slug) }}"></a>
+                                            <a href="{{ asset('/'.$cate->slug_cate) }}"></a>
                                             <a href="{{ route('category.edit', $cate->id) }}">
                                                 <button type="button" class="btn btn-info">Sửa</button>
                                             </a>                                        

@@ -69,65 +69,34 @@
     <nav id="menu" class="navbar container">
 		<div class="navbar-header">
 			<button type="button" class="btn btn-navbar navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"><i class="fa fa-bars"></i></button>
-			<a class="navbar-brand" href="#">
-				<div class="logo"><span>Newspaper</span></div>
+			<a class="navbar-brand" href="{{ asset('/') }}">
+				<div class="logo"><span>DK News</span></div>
 			</a>
 		</div>
 		<div class="collapse navbar-collapse navbar-ex1-collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="index.html">Home</a></li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <i class="fa fa-arrow-circle-o-down"></i></a>
+				<li><a href="{{ asset('/') }}">Trang chủ</a></li>
+				@php 
+					$menu_lv_1 = DB::table('categories')->select('id', 'cate_name', 'parent_id', 'slug_cate')->where('parent_id', 0)->get();
+			 	@endphp
+			 	@foreach ($menu_lv_1 as $item_lv_1)
+				<li class="dropdown"><a href="{{ asset('category/'.$item_lv_1->slug_cate) }}" class="dropdown-toggle">{{ $item_lv_1->cate_name }}</a>
+				@php 
+					$menu_lv_2 = DB::table('categories')->select('id', 'cate_name', 'parent_id', 'slug_cate')->where('parent_id', $item_lv_1->id)->get();
+			 	@endphp
+				@if (count($menu_lv_2) > 0)
 					<div class="dropdown-menu">
 						<div class="dropdown-inner">
 							<ul class="list-unstyled">
-								<li><a href="archive.html">Login</a></li>
-								<li><a href="archive.html">Register</a></li>
+								@foreach ($menu_lv_2 as $item_lv_2)
+								<li><a href="{{ asset('category/'.$item_lv_2->slug_cate) }}">{{ $item_lv_2->cate_name }}</a></li>
+								@endforeach
 							</ul>
 						</div>
 					</div>
+				@endif
 				</li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Video <i class="fa fa-arrow-circle-o-down"></i></a>
-					<div class="dropdown-menu">
-						<div class="dropdown-inner">
-							<ul class="list-unstyled">
-								<li><a href="archive.html">Text 201</a></li>
-								<li><a href="archive.html">Text 202</a></li>
-								<li><a href="archive.html">Text 203</a></li>
-								<li><a href="archive.html">Text 204</a></li>
-								<li><a href="archive.html">Text 205</a></li>
-							</ul>
-						</div> 
-					</div>
-				</li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Category <i class="fa fa-arrow-circle-o-down"></i></a>
-					<div class="dropdown-menu" style="margin-left: -203.625px;">
-						<div class="dropdown-inner">
-							<ul class="list-unstyled">
-								<li><a href="archive.html">Text 301</a></li>
-								<li><a href="archive.html">Text 302</a></li>
-								<li><a href="archive.html">Text 303</a></li>
-								<li><a href="archive.html">Text 304</a></li>
-								<li><a href="archive.html">Text 305</a></li>
-							</ul>
-							<ul class="list-unstyled">
-								<li><a href="archive.html">Text 306</a></li>
-								<li><a href="archive.html">Text 307</a></li>
-								<li><a href="archive.html">Text 308</a></li>
-								<li><a href="archive.html">Text 309</a></li>
-								<li><a href="archive.html">Text 310</a></li>
-							</ul>
-							<ul class="list-unstyled">
-								<li><a href="archive.html">Text 311</a></li>
-								<li><a href="archive.html">Text 312</a></li>
-								<li><a href="archive.html#">Text 313</a></li>
-								<li><a href="archive.html#">Text 314</a></li>
-								<li><a href="archive.html">Text 315</a></li>
-							</ul>
-						</div>
-					</div>
-				</li>
-				<li><a href="archive.html"><i class="fa fa-cubes"></i> Blocks</a></li>
-				<li><a href="contact.html"><i class="fa fa-envelope"></i> Contact</a></li>
+				@endforeach
 			</ul>
 			<ul class="list-inline navbar-right top-social">
 				<li><a href="#"><i class="fa fa-facebook"></i></a></li>
@@ -142,64 +111,8 @@
 	@yield('content')
 
 	<footer>
-		<div class="wrap-footer">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-4 col-footer footer-1">
-						<div class="footer-heading"><h1><span style="color: #fff;">NEWSPAPER</span></h1></div>
-						<div class="content">
-							<p>Never missed any post published in our site. Subscribe to our daly newsletter now.</p>
-							<strong>Email address:</strong>
-							<form action="#" method="post">
-								<input type="text" name="your-name" value="" size="40" placeholder="Your Email" />
-								<input type="submit" value="SUBSCRIBE" class="btn btn-3" />
-							</form>
-						</div>
-					</div>
-					<div class="col-md-4 col-footer footer-2">
-						<div class="footer-heading"><h4>Tags</h4></div>
-						<div class="content">
-							<a href="#">animals</a>
-							<a href="#">cooking</a>
-							<a href="#">countries</a>
-							<a href="#">city</a>
-							<a href="#">children</a>
-							<a href="#">home</a>
-							<a href="#">likes</a>
-							<a href="#">photo</a>
-							<a href="#">link</a>
-							<a href="#">law</a>
-							<a href="#">shopping</a>
-							<a href="#">skate</a>
-							<a href="#">scholl</a>
-							<a href="#">video</a>
-							<a href="#">travel</a>
-							<a href="#">images</a>
-							<a href="#">love</a>
-							<a href="#">lists</a>
-							<a href="#">makeup</a>
-							<a href="#">media</a>
-							<a href="#">password</a>
-							<a href="#">pagination</a>
-							<a href="#">wildlife</a>
-						</div>
-					</div>
-					<div class="col-md-4 col-footer footer-3">
-						<div class="footer-heading"><h4>Link List</h4></div>
-						<div class="content">
-							<ul>
-								<li><a href="#">MOST VISITED COUNTRIES</a></li>
-								<li><a href="#">5 PLACES THAT MAKE A GREAT HOLIDAY</a></li>
-								<li><a href="#">PEBBLE TIME STEEL IS ON TRACK TO SHIP IN JULY</a></li>
-								<li><a href="#">STARTUP COMPANY’S CO-FOUNDER TALKS ON HIS NEW PRODUCT</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 		<div class="copy-right">
-			<p>Copyright 2015 - <a href="http://www.365bootstrap.com" target="_blank" rel="nofollow">Bootstrap Themes</a> Designed by 365Bootstrap.com</p>
+			<p>Copyright 2017 - <a href="#" target="_blank" rel="nofollow">Credit by</a> DK</p>
 		</div>
 	</footer>
 	<!-- Footer -->

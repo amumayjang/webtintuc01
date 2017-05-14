@@ -46,9 +46,9 @@ class CategoryController extends Controller
     {
         $this->cateReposi->create([
                 'cate_name' => $request->cate_name,
-                'slug' => str_slug($request->cate_name),
+                'slug_cate' => str_slug($request->slug),
                 'parent_id' => $request->parent_id,
-                'description' => $request->description,
+                'description_cate' => $request->description,
             ]);
         return redirect()->route('category.index')->with(['flash_message' => 'Tạo danh mục thành công!', 'flash_level' => 'success']);
     }
@@ -88,8 +88,8 @@ class CategoryController extends Controller
     {
         $this->cateReposi->update([
                 'cate_name' => $request->cate_name,
-                'slug' => str_slug($request->slug),
-                'description' => $request->description,
+                'slug_cate' => str_slug($request->slug),
+                'description_cate' => $request->description,
                 'parent_id' => $request->parent_id,
             ], $id);
         return redirect()->route('category.index');
@@ -116,7 +116,7 @@ Make slug from input and check unique slug in category table
             $str = $_GET['str'];
             $slug = str_slug($str);
             //Check slug in category table
-            $countSlug = count($this->cateReposi->findWhere(['slug' => $slug]));
+            $countSlug = count($this->cateReposi->findWhere(['slug_cate' => $slug]));
             //if has slug in category table => return false else => return true and slug
             if ($countSlug > 0) {
                 $result = false;

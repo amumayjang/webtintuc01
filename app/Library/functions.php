@@ -56,42 +56,92 @@
 		}
 	}
 
-	/**
-	 * [relateNews show relate news]
-	 * @param  [type] $tags    [all tag of article]
-	 * @param  [type] $cate    [category of article]
-	 * @param  [type] $numNews [number news relate of article]
-	 * @return [type]          [list relate news in tag <li>]
-	 */
-	function relateNews($tags, $cate, $numNews)
+	function NewPosts ($num)
 	{
-		$countNewsOfTag = 0;
-		foreach ($tags as $tag) {
-			if (count($tag->articles()->get()) > 0) {
-				foreach ($tag->articles()->get() as $artOfTag) {
-					if ($artOfTag->status == 1) {
-						echo "<li><a href='".asset('/'.$artOfTag->slug)."'>".$artOfTag->title."</a></li>";
-						$countNewsOfTag++;
-						if ($countNewsOfTag == $numNews) {
-							break 2;
-						}
-					}
-				}
-			}
-		}
-		if ($countNewsOfTag < $numNews) {
-			if (count($cate->articles()->get()) > 0) {
-				foreach ($cate->articles()->get() as $artOfCate) {
-					if ($artOfCate->status == 1) {
-						echo "<li><a href='".asset('/'.$artOfCate->slug)."'>".$artOfCate->title."</a></li>";
-						$countNewsOfTag++;
-						if ($countNewsOfTag == $numNews) {
-							break;
-						}
-					}
-				}
-			}
-		}
+		return DB::table('articles')
+                    ->join('categories', 'articles.cate_id', '=', 'categories.id')
+                    ->join('users', 'articles.user_id', '=', 'users.id')
+                    ->select('articles.id', 'articles.title', 'articles.slug', 'articles.view', 'articles.imgThumb', 'articles.time_public', 'articles.description', 'categories.cate_name', 'categories.slug_cate', 'users.name')
+                    ->orderBy('articles.time_public', 'DESC')
+                    ->where('status', 1)
+                    ->get()
+                    ->take($num);
+	}
+
+	function PopularPost ($num)
+	{
+		return DB::table('articles')
+                    ->join('categories', 'articles.cate_id', '=', 'categories.id')
+                    ->join('users', 'articles.user_id', '=', 'users.id')
+                    ->select('articles.id', 'articles.title', 'articles.slug', 'articles.view', 'articles.imgThumb', 'articles.time_public', 'categories.cate_name', 'categories.slug_cate', 'users.name')
+                    ->orderBy('articles.view', 'DESC')
+                    ->where('articles.status', 1)
+                    ->get()
+                    ->take($num);	
+	}
+
+	function HotPost ($num)
+	{
+		return DB::table('articles')
+                    ->join('categories', 'articles.cate_id', '=', 'categories.id')
+                    ->join('users', 'articles.user_id', '=', 'users.id')
+                    ->select('articles.id', 'articles.title', 'articles.slug', 'articles.view', 'articles.imgThumb', 'articles.time_public', 'categories.cate_name', 'categories.slug_cate', 'users.name')
+                    ->orderBy('articles.time_public', 'DESC')
+                    ->where('articles.status', 1)
+                    ->where('articles.hot', 1)
+                    ->get()
+                    ->take(3);
+	}
+
+	function RelatePosts ($id, $idTags, $slugCate, $num)
+	{
+		$relatedPostOfTag = DB::table('articles')
+                    ->join('article_tags', 'articles.id', '=', 'article_tags.article_id')
+                    ->join('tags', 'article_tags.tag_id', '=', 'tags.id')
+                    ->join('users', 'articles.user_id', '=', 'users.id')
+                    ->select('articles.title', 'articles.slug', 'articles.view', 'articles.imgThumb', 'articles.time_public', 'users.name')
+                    ->orderBy('articles.time_public', 'DESC')
+                    ->where('articles.id', '<>', $id)
+                    ->where('articles.hot', 1)
+                    ->whereIn('article_tags.tag_id', $idTags)
+                    ->get()
+                    ->take($num);
+        $relatedPostOfCate = DB::table('articles')
+                    ->join('categories', 'articles.cate_id', '=', 'categories.id')
+                    ->join('users', 'articles.user_id', '=', 'users.id')
+                    ->select('articles.title', 'articles.slug', 'articles.view', 'articles.imgThumb', 'articles.time_public', 'users.name')
+                    ->orderBy('articles.time_public', 'DESC')
+                    ->where('categories.slug_cate', $slugCate)
+                    ->where('articles.id', '<>', $id)
+                    ->where('articles.hot', 1)
+                    ->get()
+                    ->take($num);
+        $relatePosts = count($relatedPostOfTag) > 0 ? $relatedPostOfTag : $relatedPostOfCate;
+        return $relatePosts;
+	}
+
+	function NewComments ($num)
+	{
+		return DB::table('comments')
+                    ->join('users', 'comments.user_id', '=', 'users.id')
+                    ->join('articles', 'comments.article_id', '=', 'articles.id')
+                    ->select('comments.content_cmt', 'users.name', 'users.avatar', 'articles.slug')
+                    ->orderBy('comments.created_at', 'DESC')
+                    ->get()
+                    ->take($num);
+	}
+
+	function GetPostInCate ($cate, $num)
+	{
+		return DB::table('articles')
+                        ->join('categories', 'articles.cate_id', '=', 'categories.id')
+                        ->join('users', 'articles.user_id', '=', 'users.id')
+                        ->select('articles.id', 'articles.title', 'articles.slug', 'articles.view', 'articles.imgThumb', 'articles.time_public', 'articles.description', 'categories.cate_name', 'categories.slug_cate', 'users.name')
+                        ->orderBy('articles.time_public', 'DESC')
+                        ->where('articles.status', 1)
+                        ->where('articles.cate_id', $cate)
+                        ->get()
+                        ->take($num);
 	}
 
  ?>

@@ -25,7 +25,7 @@ class CreateCategoryRequest extends FormRequest
     {
         return [
             'cate_name' => 'required|unique:categories,cate_name',
-            'slug' => 'required|unique:categories,slug',
+            'slug' => 'required|unique:categories,slug_cate',
         ];
     }
 

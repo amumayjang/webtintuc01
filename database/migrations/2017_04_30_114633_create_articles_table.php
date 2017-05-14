@@ -17,12 +17,12 @@ class CreateArticlesTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->longText('content');
-            $table->string('slug');
-            $table->string('imgThumb')->nullable();
-            $table->mediumText('description')->nullable();
+            $table->string('slug')->unique();
+            $table->string('imgThumb');
+            $table->mediumText('description');
             $table->integer('user_id');
             $table->integer('cate_id')->unsigned();
-            $table->dateTime('time_public')->nullable();
+            $table->dateTime('time_public');
             $table->tinyInteger('hot')->nullable();
             $table->tinyInteger('status')->nullable();
             $table->integer('view')->nullable();

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Repositories\ArticleRepositoryEloquent;
 use App\Repositories\CategoryRepositoryEloquent;
 use App\Repositories\CommentRepositoryEloquent;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -21,35 +22,22 @@ class HomeController extends Controller
 
     public function index()
     {
-        /**
-         * get all article and sort descending follow time_public field
-         */
-        $allArticles = $this->articleRepository->scopeQuery(function($query){
-            return $query->orderBy('time_public', 'desc');
-        });
-    	/**
-    	 * get HOT article
-    	 */
-    	$hotNews = $allArticles->findWhere(['status' => 1, 'hot' => 1])->take(10);
-
-    	/**
-    	 * get all article new
-    	 */
-		$news = $allArticles->findByField('status', 1);
-        $popularNews = $this->articleRepository->scopeQuery(function($query){
-            return $query->orderBy('view', 'desc');
-        })->findByField('status', 1);
-
-        $cateHead = $this->cateRepository->findByField('cate_name', 'Xã hội')->first();
-        $newsHead = $allArticles->findWhere(['status' => 1, 'cate_id' => $cateHead->id]);
-
-        $cateSecond = $this->cateRepository->findByField('cate_name', 'Kinh tế')->first();
-        $newsSecond = $allArticles->findWhere(['status' => 1, 'cate_id' => $cateSecond->id]);
-
-        $cateBot = $this->cateRepository->findByField('cate_name', 'Thể thao')->first();
-        $newsBot = $allArticles->findWhere(['status' => 1, 'cate_id' => $cateBot->id]);
-
-    	return view('front.home', compact('hotNews', 'news', 'newsHead', 'newsSecond', 'newsBot', 'popularNews'));
+        //list cate need show in home page
+        $cates = [4, 1, 3];
+        //get new post
+        $newPosts = NewPosts(3);
+        //get post in list cate show in home page
+        $postInCates = [];
+        for ($i=0; $i < count($cates); $i++) { 
+            $postInCates[$i] = GetPostInCate($cates[$i], 5);
+        }
+        //get popular post
+        $postPopular = PopularPost(3);
+        //get new comments
+        $newComments = NewComments(5);
+        //get all category
+        $cateAll = $this->cateRepository->all();
+    	return view('home', compact('newPosts', 'postInCates', 'postPopular', 'newComments', 'cateAll'));
     }
     /**
      * [single show article on signle page]
@@ -58,15 +46,33 @@ class HomeController extends Controller
      */
     public function single($slug)
     {
-    	$news = $this->articleRepository->findByField('slug', $slug)->first();
-        $recentNews = $this->articleRepository->scopeQuery(function($query) {
-            return $query->orderBy('time_public', 'desc');
-        })->all();
-        $comments = $this->commentRepository->scopeQuery(function($query) {
-            return $query->orderBy('created_at', 'desc');
-        })->all();
-    	if ($news) {
-    		return view('front.single', compact('news', 'recentNews', 'comments'));
+    	$post = DB::table('articles')
+                    ->join('categories', 'articles.cate_id', '=', 'categories.id')
+                    ->join('users', 'articles.user_id', '=', 'users.id')
+                    ->select('articles.id', 'articles.title', 'articles.content', 'articles.view', 'articles.imgThumb', 'articles.time_public', 'categories.cate_name', 'categories.slug_cate', 'users.name')
+                    ->where('articles.slug', $slug)
+                    ->first();
+        $tagOfPost = DB::table('article_tags')
+                    ->join('tags', 'article_tags.tag_id', '=', 'tags.id')
+                    ->select('tags.name_tag', 'tags.id')
+                    ->where('article_tags.article_id', $post->id)
+                    ->get();
+        $commentOfPost = DB::table('comments')
+                    ->join('users', 'comments.user_id', '=', 'users.id')
+                    ->select('comments.id' , 'comments.content_cmt', 'users.name', 'users.avatar')
+                    ->orderBy('comments.created_at', 'DESC')
+                    ->where('comments.article_id', $post->id)
+                    ->get();
+        $idTagOfPost = [];
+        foreach ($tagOfPost as $item) {
+            array_push($idTagOfPost, $item->id);
+        }
+        $relatePosts = RelatePosts($post->id, $idTagOfPost, $post->slug_cate, 3);
+        $newPosts = NewPosts(8);
+        $postHot = HotPost(3);
+        $popularPost = PopularPost(3);
+    	if ($post) {
+    		return view('front.single', compact('post', 'newPosts', 'commentOfPost', 'tagOfPost', 'relatePosts', 'postHot', 'popularPost'));
     	}
         return view('notfound');
     }
@@ -83,6 +89,27 @@ class HomeController extends Controller
                 'article_id' => $request->article_id,
             ]);
         return redirect()->back();
+    }
+
+    public function category($slug)
+    {
+        $postInCate = DB::table('articles')
+                    ->join('categories', 'articles.cate_id', '=', 'categories.id')
+                    ->join('users', 'articles.user_id', '=', 'users.id')
+                    ->select('articles.id', 'articles.title', 'articles.slug', 'articles.view', 'articles.imgThumb', 'articles.time_public', 'articles.description', 'categories.cate_name', 'categories.slug_cate', 'users.name')
+                    ->orderBy('articles.time_public', 'DESC')
+                    ->where('articles.status', 1)
+                    ->where('categories.slug_cate', $slug)
+                    ->paginate(4);
+        $newPosts = NewPosts(8);
+        $postHot = HotPost(3);
+        $popularPost = PopularPost(3);
+        return view('front.archive', compact('newPosts', 'postInCate', 'postHot', 'popularPost'));
+    }
+
+    public function tag()
+    {
+        return view('front.tag');
     }
 
 }
