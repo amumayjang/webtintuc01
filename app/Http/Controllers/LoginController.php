@@ -60,7 +60,7 @@ class LoginController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'role_id' => 300,
+                'role_id' => 100,
             ]);
         return redirect()->route('getSignIn')->with(['message' => 'Đăng ký tài khoản thành công! Hãy tiến hành đăng nhập']);
     }

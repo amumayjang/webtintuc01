@@ -13,8 +13,8 @@ class CategoryTableSeeder extends Seeder
     {
         DB::table('categories')->insert([
         		'cate_name' => 'Chưa được phân loại',
-        		'slug_cate' => str_slug('Chưa được phân loại')
-                'parent_id' => 0;
+        		'slug_cate' => str_slug('Chưa được phân loại'),
+                'parent_id' => 0
         	]);
     }
 }

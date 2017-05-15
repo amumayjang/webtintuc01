@@ -2,6 +2,7 @@
 @section('content')
 	<div class="featured container">
 		<div id="owl-demo" class="owl-carousel">
+			@if (count($newPosts) > 0)
 			@foreach ($newPosts as $item)
 			<div class="item">
 				<div class="zoom-container">
@@ -14,6 +15,7 @@
 				</div>
 			</div>
 			@endforeach
+			@endif
 		</div>
 	</div>
 	<!-- Header -->
@@ -23,6 +25,7 @@
 		<div class="">
 			<div class="row">
 				<div id="main-content" class="col-md-8">
+					@if (count($postInCate) > 0)
 					@foreach ($postInCate as $item)
 					<div class="box">
 						<a href="#"><h2 class="vid-name">{{ $item->title }}</h2></a>
@@ -43,6 +46,7 @@
 					</div>
 					<hr class="line">
 					@endforeach
+					@endif
 					<div class="box">
 						<center>
 						<ul class="pagination">
@@ -108,6 +112,7 @@
 					<div class="widget wid-post">
 						<div class="heading"><h4>Tin HOT</h4></div>
 						<div class="content">
+							@if (count($postHot) > 0)
 							@foreach ($postHot as $item)
 							<div class="post wrap-vid">
 								<div class="zoom-container">
@@ -127,12 +132,14 @@
 								</div>
 							</div>
 							@endforeach
+							@endif
 						</div>
 					</div>
 					<!---- Start Widget ---->
 					<div class="widget ">
 						<div class="heading"><h4>Được chú ý</h4></div>
 						<div class="content">
+							@if (count($popularPost) > 0)
 							@foreach ($popularPost as $item)
 							<div class="wrap-vid">
 								<div class="zoom-container">
@@ -150,6 +157,7 @@
 								</div>
 							</div>
 							@endforeach
+							@endif
 						</div>
 					</div>
 				</div>

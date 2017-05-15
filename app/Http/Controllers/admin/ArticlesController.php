@@ -73,6 +73,8 @@ class ArticlesController extends Controller
         if ($request->hasFile('thumbnail')) {
             $nameImage = files_upload('public/admin/uploads/images/thumbnail-articles', $request->file('thumbnail'));
         }
+        $timePublic = $request->time_public;
+        $status = strtotime($timePublic) <= strtotime("now") ? 1 : 0;
         //create article
         $this->articlesReposi->create([
                 'title' => $request->title,
@@ -81,9 +83,10 @@ class ArticlesController extends Controller
                 'slug' => str_slug($request->slug),
                 'user_id' => Auth::id(),
                 'cate_id' => $request->cate_id,
-                'time_public' => $request->time_public,
+                'time_public' => $timePublic,
                 'hot' => $request->hot,
                 'imgThumb' => $nameImage,
+                'status' => $status
             ]);
         //get current article
         $lastArticle = $this->articlesReposi->all()->last();

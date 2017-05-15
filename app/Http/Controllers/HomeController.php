@@ -23,7 +23,7 @@ class HomeController extends Controller
     public function index()
     {
         //list cate need show in home page
-        $cates = [4, 1, 3];
+        $cates = [2, 3, 4];
         //get new post
         $newPosts = NewPosts(3);
         //get post in list cate show in home page

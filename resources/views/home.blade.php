@@ -46,18 +46,18 @@
 				</div><!-- /carousel -->
 			</div>
 			<div class="col-sm-4" >
+				@if (count($newPosts) > 0)
 				<div id="owl-demo-1" class="owl-carousel">
-					@if (count($newPosts) > 0)
 					@foreach ($newPosts as $newPost)
 						<a href="{{ asset('/'.$newPost->slug) }}">
 							<img src="{{ asset('public/admin/uploads/images/thumbnail-articles/'.$newPost->imgThumb) }}" />
 						</a>
 					@endforeach
-					@endif
 				</div>
 				<a href="{{ asset('/'.$newPosts[0]->slug) }}">
 					<img src="{{ asset('public/admin/uploads/images/thumbnail-articles/'.$newPosts[0]->imgThumb) }}" />
 				</a>
+				@endif
 			</div>
 		</div>
 	</div>

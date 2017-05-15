@@ -77,7 +77,7 @@
 			<ul class="nav navbar-nav">
 				<li><a href="{{ asset('/') }}">Trang chủ</a></li>
 				@php 
-					$menu_lv_1 = DB::table('categories')->select('id', 'cate_name', 'parent_id', 'slug_cate')->where('parent_id', 0)->get();
+					$menu_lv_1 = DB::table('categories')->select('id', 'cate_name', 'parent_id', 'slug_cate')->where('parent_id', 0)->offset(1)->limit(7)->get();
 			 	@endphp
 			 	@foreach ($menu_lv_1 as $item_lv_1)
 				<li class="dropdown"><a href="{{ asset('category/'.$item_lv_1->slug_cate) }}" class="dropdown-toggle">{{ $item_lv_1->cate_name }}</a>
