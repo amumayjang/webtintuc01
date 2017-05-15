@@ -199,7 +199,13 @@ class ArticlesController extends Controller
      */
     public function destroy($id)
     {
-        $this->articlesReposi->delete($id);
+        $article = $this->articlesReposi->find($id);
+        unlink('public/admin/uploads/images/thumbnail-articles/'.$article->imgThumb);
+        $article->delete();
+        $commentOfArticle = $this->commentReposi->findByField('article_id', $id);
+        foreach ($commentOfArticle as $cmt) {
+            $cmt->delete();
+        }
         return redirect()->route('articles.index')->with(['flash_message' => 'Xóa bài viết thành công!', 'flash_level' => 'success']);
     }
 

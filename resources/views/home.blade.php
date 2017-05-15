@@ -14,6 +14,7 @@
 					<!-- Wrapper for slides -->
 					<div class="carousel-inner">
 					<?php $check = true; ?>
+					@if (count($newPosts) > 0)
 					@foreach ($newPosts as $newPost)
 						<div class="item 
 							@if($check == true)
@@ -33,6 +34,7 @@
 							</div><!-- /header-text -->
 						</div>
 					@endforeach
+					@endif
 					</div>
 					<!-- Controls -->
 					<a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
@@ -45,11 +47,13 @@
 			</div>
 			<div class="col-sm-4" >
 				<div id="owl-demo-1" class="owl-carousel">
+					@if (count($newPosts) > 0)
 					@foreach ($newPosts as $newPost)
 						<a href="{{ asset('/'.$newPost->slug) }}">
 							<img src="{{ asset('public/admin/uploads/images/thumbnail-articles/'.$newPost->imgThumb) }}" />
 						</a>
 					@endforeach
+					@endif
 				</div>
 				<a href="{{ asset('/'.$newPosts[0]->slug) }}">
 					<img src="{{ asset('public/admin/uploads/images/thumbnail-articles/'.$newPosts[0]->imgThumb) }}" />
@@ -63,6 +67,7 @@
 		<div class="row">
 			<div id="main-content"><!-- background not working -->
 				<div class="col-md-6">
+					@if (count($newPosts) > 0)
 					<div class="box wrap-vid">
 						<div class="zoom-container">
 							<div class="zoom-caption">
@@ -79,6 +84,7 @@
 						</div>
 						<p class="more">{{ $newPosts->first()->description }}</p>
 					</div>
+					@endif
 					<?php $firstCate = $postInCates[0] ?>
 					@if (count($firstCate) > 0)
 					<div class="box">
@@ -170,6 +176,7 @@
 						</div>
 					</div>
 					<?php $secondCate = $postInCates[1] ?>
+					@if (count($secondCate) > 0)
 					<div class="box">
 						<div class="box-header header-natural">
 							<h2>{{ $secondCate->first()->cate_name }}</h2>
@@ -194,6 +201,7 @@
 							</div>
 						</div>
 					</div>
+					@endif
 				</div>
 			</div>
 			<div id="sidebar">
@@ -210,6 +218,7 @@
 							</ul>
 							<div class="tab-content">
 								<div id="most" class="tab-pane fade in active">
+									@if (count($postPopular))
 									@foreach ($postPopular as $item)
 									<div class="post wrap-vid">
 										<div class="zoom-container">
@@ -235,6 +244,7 @@
 										</div>
 									</div>
 									@endforeach
+									@endif
 								</div>
 								<div id="popular" class="tab-pane fade">
 									<div class="post wrap-vid">
@@ -323,6 +333,7 @@
 					<div class="widget wid-new-post">
 						<div class="heading"><h4>Bài viết mới</h4></div>
 						<div class="content">
+							@if (count($newPosts) > 0)
 							@foreach ($newPosts as $item)
 							<h6><a href="{{ asset('/'.$item->slug) }}">{{ $item->title }}</a></h6>
 							<img src="{{ asset('public/admin/uploads/images/thumbnail-articles/'.$item->imgThumb) }}" />
@@ -332,6 +343,7 @@
 							</ul>
 							<p>{{ $item->description }}...</p>
 							@endforeach
+							@endif
 						</div>
 					</div>
 					<!---- Start Widget ---->
@@ -362,6 +374,7 @@
 					<div class="widget wid-comment">
 						<div class="heading"><h4>Bình luận mới</h4></div>
 						<div class="content">
+							@if (count($newComments) > 0)
 							@foreach ($newComments as $item)
 							<div class="post">
 								<a href="single.html">
@@ -372,6 +385,7 @@
 								</div>
 							</div>
 							@endforeach
+							@endif
 						</div>
 					</div>
 					<!---- Start Widget ---->
