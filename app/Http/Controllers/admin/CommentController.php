@@ -99,4 +99,19 @@ class CommentController extends Controller
         $this->commentReposi->delete($id);
         return back()->withInput();
     }
+
+    public function destroyListId()
+    {
+        if (isset($_GET['listId'])) {
+            foreach ($_GET['listId'] as $id) {
+                $cmt = $this->commentReposi->find($id);
+                if ($cmt != null) {
+                    $cmt->delete();
+                }
+            }
+            echo json_encode(true);
+        } else {
+            echo json_encode(false);
+        }
+    }
 }

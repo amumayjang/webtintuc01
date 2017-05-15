@@ -31,8 +31,10 @@
                         <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                             <thead>
                                 <tr>
+                                    <th><input type="checkbox" id="checkAll"></th>
                                     <th class="text-center">Người dùng</th>
                                     <th class="text-center">Nội dung</th>
+                                    <th class="text-center" style="width: 13%">Tác vụ</th>
                                     <th class="text-center">Bài viết</th>
                                     <th class="text-center">Thời gian đăng</th>
                                 </tr>
@@ -40,25 +42,18 @@
                             <tbody>
                             @isset ($comments)
                                 @foreach ($comments as $comment)
-                                    <tr class="odd gradeX">
+                                    <tr class="odd gradeX" id="{{ $comment->id }}">
+                                        <td class="text-center">
+                                            <input type="checkbox" class="checkOne" value="{{ $comment->id }}">
+                                        </td>
                                         <td class="center">{{ $comment->user()->get()->first()->name }}</td>
-                                        <td class="div-show">
-                                            <p>
-                                                {{ $comment->content_cmt }}
-                                            </p>
-                                            <p>
-                                                <ul class="div-hidden">
-                                                    <li class="col-md-5">
-                                                        <a href="javascript:;" data-toggle="modal" data-target="#modalRep-{{ $comment->id }}">Trả lời</a>
-                                                    </li>                                            
-                                                    <li class="col-md-5">
-                                                        <a href="javascript:;" data-toggle="modal" data-target="#modalEdit-{{ $comment->id }}">Chỉnh sửa</a>
-                                                    </li>                                            
-                                                    <li class="col-md-2">
-                                                        <a href="javascript:;" data-toggle="modal" data-target="#modalDel-{{ $comment->id }}">Xóa</a>
-                                                    </li>                                            
-                                                </ul>
-                                            </p>
+                                        <td class="center">
+                                            {{ $comment->content_cmt }}
+                                        </td>
+                                        <td class="text-center" style="width: 13%">
+                                            <button type="button" class="btn-primary" data-toggle="modal" data-target="#modalRep-{{ $comment->id }}"><i class="fa fa-reply"></i></button>
+                                            <button type="button" class="btn-warning" data-toggle="modal" data-target="#modalEdit-{{ $comment->id }}"><i class="fa fa-pencil"></i></button>
+                                            <button type="button" class="btn-danger" data-toggle="modal" data-target="#modalDel-{{ $comment->id }}"><i class="fa fa-trash"></i></button>
                                         </td>
                                         <td class="center">{{ $comment->article()->get()->first()->title }}</td>
                                         <td class="text-center">{{ $comment->created_at }}</td>
@@ -149,6 +144,15 @@
                             </tbody>
                         </table>
                         <!-- /.table-responsive -->
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <select id="actionDelete" class="form-control">
+                                    <option selected>Hành động...</option>
+                                    <option value="delete">Xóa mục đã chọn</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-success" id="submitDelete" type="button" data-toggle="modal" data-target="#modalOk">Đồng ý</button>
+                        </div>
                     </div>
                     <!-- /.panel-body -->
                 </div>
@@ -180,5 +184,8 @@
         })
         // popover demo
         $("[data-toggle=popover]").popover()
+
+        var url = "{{ route('comments.del-list') }}";
+        deleteListId(url);
     </script>
 @endsection

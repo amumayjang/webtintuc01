@@ -26,6 +26,9 @@
                         <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                             <thead>
                                 <tr>
+                                    <th class="text-center">
+                                        <input type="checkbox" id="checkAll">
+                                    </th>
                                     <th class="text-center">Họ và tên</th>
                                     <th class="text-center">Email</th>
                                     <th class="text-center">Vai trò</th>
@@ -36,10 +39,13 @@
                             <tbody>
                             @isset ($users)
                                 @foreach ($users as $user)
-                                    <tr class="odd gradeX">
+                                    <tr class="odd gradeX" id="{!! $user->id !!}">
+                                        <td class="text-center">
+                                            <input value="{!! $user->id !!}" type="checkbox" class="checkOne">
+                                        </td>
                                         <td class="center">{{ $user->name }}</td>
                                         <td class="text-center">{{ $user->email }}</td>
-                                        <td class="text-center">{{ $user->role()->get()->first()->role_name }}</td>
+                                        <td class="text-center" id="role-{!! $user->id !!}">{{ $user->role()->get()->first()->role_name }}</td>
                                         <td class="text-center">{{ $user->created_at }}</td>
                                         <td class="text-center">
                                             <a href="{{ route('users.edit', $user->id) }}">
@@ -77,6 +83,26 @@
                             </tbody>
                         </table>
                         <!-- /.table-responsive -->
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <select id="actionDelete" class="form-control">
+                                    <option selected>Hành động...</option>
+                                    <option value="delete">Xóa mục đã chọn</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-success" id="submitDelete" type="button">Đồng ý</button>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <select id="actionChange" class="form-control">
+                                    <option selected value="">Thay đổi vai trò...</option>
+                                    @php
+                                        show_roles($cates)
+                                    @endphp
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" id="submitChange" type="button">Thay đổi</button>
+                        </div>
                     </div>
                     <!-- /.panel-body -->
                 </div>
@@ -99,6 +125,44 @@
         $('#dataTables-example').DataTable({
             responsive: true
         });
+
+        var url = "{{ route('users.del-list') }}";
+        deleteListId(url);
+
+        $("#submitChange").click(function () {
+            var ok = confirm("Xác nhận thay đổi vai trò của người dùng đã chọn?");
+            if (ok) {
+                var role = $("#actionChange").val();
+                var nameRole = $("option[value='"+ role +"']").text();
+                var listIdUser = [];
+                var index = 0;
+                $(":checkbox.checkOne").each(function () {
+                    if ($(this).is(":checked")) {
+                        listIdUser[index] = $(this).val();
+                        index++;
+                    }
+                })
+                if ((listIdUser[0] != null)&&(role != "")) {
+                    $.ajax({
+                        url: "{{ route('users.change-role') }}",
+                        data: 
+                            {
+                                listId: listIdUser,
+                                role: role
+                            },
+                        dataType: "JSON",
+                        type: "GET",
+                        success: function (rp) {
+                            if (rp) {
+                                for (var i = 0; i < listIdUser.length; i++) {
+                                    $("td#role-" + listIdUser[i]).text(nameRole);
+                                }                                               
+                            } 
+                        }
+                    })
+                }
+            }
+        })
     });
     </script>
 @endsection

@@ -31,7 +31,8 @@ class UsersController extends Controller
     public function index ()
     {
         $users = $this->usersReposi->all();
-        return view('admin.users.manager', compact('users'));
+        $cates = $this->rolesReposi->all();
+        return view('admin.users.manager', compact('users', 'cates'));
     }
 
     public function create ()
@@ -85,8 +86,44 @@ class UsersController extends Controller
 
     public function destroy ($id)
     {
-        $this->usersReposi->delete($id);
+        $user = $this->usersReposi->find($id);
+        if ($user != null) {
+            $user->delete();
+        }
         return redirect()->route('users.manager');
+    }
+
+    public function destroyListId()
+    {
+        if (isset($_GET['listId'])) {
+            foreach ($_GET['listId'] as $id) {
+                $user = $this->usersReposi->find($id);
+                if ($user != null) {
+                    $user->delete();
+                }
+            }
+            echo json_encode(true);
+        } else {
+            echo json_encode(false);
+        }
+    }
+
+    public function changeRole()
+    {
+        if (isset($_GET['listId']) && isset($_GET['role'])) {
+            $role = $_GET['role'];
+            foreach ($_GET['listId'] as $id) {
+                $user = $this->usersReposi->find($id);
+                if ($user != null) {
+                    $this->usersReposi->update([
+                            'role_id' => $role
+                        ], $id);
+                }
+            }
+            echo json_encode(true);
+        } else {
+            echo json_encode(false);
+        }
     }
 
 }

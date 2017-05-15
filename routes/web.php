@@ -33,6 +33,7 @@ Route::group(['prefix' => 'admin'], function () {
 
 		//comment manager
 		Route::resource('comments', 'admin\CommentController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
+		Route::get('comments/delete-list', ['as' => 'comments.del-list', 'uses' => 'admin\CommentController@destroyListId']);
 	});
 	//check role, only admin
 	Route::group(['middleware' => ['authen', 'checkrole'], 'roles' => [1000]], function () {
@@ -44,6 +45,8 @@ Route::group(['prefix' => 'admin'], function () {
 			Route::get('edit/{id}', ['as' => 'users.edit', 'uses' => 'admin\UsersController@edit']);
 			Route::post('update/{id}', ['as' => 'users.update', 'uses' => 'admin\UsersController@update']);
 			Route::get('delete/{id}', ['as' => 'users.delete', 'uses' => 'admin\UsersController@destroy']);
+			Route::get('delete-list', ['as' => 'users.del-list', 'uses' => 'admin\UsersController@destroyListId']);
+			Route::get('change-role', ['as' => 'users.change-role', 'uses' => 'admin\UsersController@changeRole']);
 
 			Route::get('test', 'admin\UsersController@getAllUser');
 		});
