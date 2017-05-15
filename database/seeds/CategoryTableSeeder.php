@@ -12,8 +12,9 @@ class CategoryTableSeeder extends Seeder
     public function run()
     {
         DB::table('categories')->insert([
-        		'cate_name' => 'Kinh tế',
-        		'slug' => str_slug('Kinh tế')
+        		'cate_name' => 'Chưa được phân loại',
+        		'slug_cate' => str_slug('Chưa được phân loại')
+                'parent_id' => 0;
         	]);
     }
 }

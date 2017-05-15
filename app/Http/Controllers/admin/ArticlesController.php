@@ -200,13 +200,18 @@ class ArticlesController extends Controller
     public function destroy($id)
     {
         $article = $this->articlesReposi->find($id);
-        unlink('public/admin/uploads/images/thumbnail-articles/'.$article->imgThumb);
-        $article->delete();
-        $commentOfArticle = $this->commentReposi->findByField('article_id', $id);
-        foreach ($commentOfArticle as $cmt) {
-            $cmt->delete();
+        if ($article != null) {
+            if ($article->imgThumb != null && file_exists('public/admin/uploads/images/thumbnail-articles/'.$article->imgThumb)) {
+                unlink('public/admin/uploads/images/thumbnail-articles/'.$article->imgThumb);
+            }
+            $article->delete();
+            $commentOfArticle = $this->commentReposi->findByField('article_id', $id);
+            foreach ($commentOfArticle as $cmt) {
+                $cmt->delete();
+            }
+            return redirect()->route('articles.index')->with(['flash_message' => 'Xóa bài viết thành công!', 'flash_level' => 'success']);
         }
-        return redirect()->route('articles.index')->with(['flash_message' => 'Xóa bài viết thành công!', 'flash_level' => 'success']);
+        return redirect()->route('articles.index')->with(['flash_message' => 'Không tìm thấy bài viết!', 'flash_level' => 'danger']);
     }
 
     /**
@@ -234,5 +239,27 @@ class ArticlesController extends Controller
             $slug = "";
         }
         echo json_encode([$result, 'slug' => $slug]);
+    }
+
+    public function destroyListId()
+    {
+        if (isset($_GET['listId'])) {
+            foreach ($_GET['listId'] as $id) {
+                $article = $this->articlesReposi->find($id);
+                if ($article != null) {
+                    if ($article->imgThumb != null && file_exists('public/admin/uploads/images/thumbnail-articles/'.$article->imgThumb)) {
+                        unlink('public/admin/uploads/images/thumbnail-articles/'.$article->imgThumb);
+                    }
+                    $article->delete($id);
+                    $commentOfArticle = $this->commentReposi->findByField('article_id', $id);
+                    foreach ($commentOfArticle as $cmt) {
+                        $cmt->delete();
+                    }
+                }
+            }
+            echo json_encode(true);
+        } else {
+            echo json_encode(false);
+        }
     }
 }

@@ -31,6 +31,7 @@
                         <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                             <thead>
                                 <tr>
+                                    <th><input type="checkbox" id="checkAll"></th>
                                     <th class="text-center">Tên danh mục</th>
                                     <th class="text-center">Đường dẫn tĩnh</th>
                                     <th class="text-center">Danh mục cha</th>
@@ -41,7 +42,10 @@
                             <tbody>
                             @isset ($cates)
                                 @foreach ($cates as $cate)
-                                    <tr class="odd gradeX">
+                                    <tr class="odd gradeX" id="{{ $cate->id }}">
+                                        <td class="text-center">
+                                            <input type="checkbox" class="checkOne" value="{{ $cate->id }}">
+                                        </td>
                                         <td class="center">{{ $cate->cate_name }}</td>
                                         <td class="text-center">{{ $cate->slug_cate }}</td>
                                         <td class="text-center">{{ $cate->parent()->first()['cate_name'] }}</td>
@@ -83,6 +87,15 @@
                             </tbody>
                         </table>
                         <!-- /.table-responsive -->
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <select id="actionDelete" class="form-control">
+                                    <option selected>Hành động...</option>
+                                    <option value="delete">Xóa mục đã chọn</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-success" id="submitDelete" type="button" data-toggle="modal" data-target="#modalOk">Đồng ý</button>
+                        </div>
                     </div>
                     <!-- /.panel-body -->
                 </div>
@@ -114,5 +127,7 @@
         })
         // popover demo
         $("[data-toggle=popover]").popover()
+        var url = "{{ route('category.del-list') }}"
+        deleteListId(url);
     </script>
 @endsection

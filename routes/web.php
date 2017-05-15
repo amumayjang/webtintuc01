@@ -16,11 +16,24 @@ Route::get('nopermission', ['as' => 'noPermission', function (){
 }]);
 
 Route::group(['prefix' => 'admin'], function () {
-	Route::get('/', ['as' => 'dashboard', 'uses' => 'admin\DashboardController@dashboard']);
 	Route::get('login', ['as' => 'get.login', 'uses' => 'admin\LoginController@getLogin']);
 	Route::post('login', ['as' => 'login', 'uses' => 'admin\LoginController@login']);
-	Route::get('logout', ['as' => 'logout', 'uses' => 'admin\LoginController@getLogout']);
+	Route::group(['middleware' => ['authen', 'checkrole'], 'roles' => [500, 700, 1000]], function() {
+		Route::get('/', ['as' => 'dashboard', 'uses' => 'admin\DashboardController@dashboard']);
+		Route::get('logout', ['as' => 'logout', 'uses' => 'admin\LoginController@getLogout']);
+		//Category manager
+		Route::resource('category', 'admin\CategoryController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
+		Route::get('category/make-slug', ['as' => 'category.make-slug', 'uses' => 'admin\CategoryController@makeSlug']);
+		Route::get('category/delete-list', ['as' => 'category.del-list', 'uses' => 'admin\CategoryController@destroyListId']);
 
+		//Article manager
+		Route::resource('articles', 'admin\ArticlesController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
+		Route::get('articles/make-slug', ['as' => 'articles.make-slug', 'uses' => 'admin\ArticlesController@makeSlug']);
+		Route::get('articles/delete-list', ['as' => 'articles.del-list', 'uses' => 'admin\ArticlesController@destroyListId']);
+
+		//comment manager
+		Route::resource('comments', 'admin\CommentController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
+	});
 	//check role, only admin
 	Route::group(['middleware' => ['authen', 'checkrole'], 'roles' => [1000]], function () {
 		//Users manager
@@ -34,18 +47,7 @@ Route::group(['prefix' => 'admin'], function () {
 
 			Route::get('test', 'admin\UsersController@getAllUser');
 		});
-
-		//Article manager
-		Route::resource('articles', 'admin\ArticlesController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
-		Route::get('articles/make-slug', ['as' => 'articles.make-slug', 'uses' => 'admin\ArticlesController@makeSlug']);
-
-		//comment manager
-		Route::resource('comments', 'admin\CommentController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
 	});
-	
-	//Category manager
-	Route::resource('category', 'admin\CategoryController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
-	Route::get('category/make-slug', ['as' => 'category.make-slug', 'uses' => 'admin\CategoryController@makeSlug']);
 
 });
 

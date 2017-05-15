@@ -5,14 +5,17 @@ namespace App\Http\Controllers\admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\CategoryRepositoryEloquent;
+use App\Repositories\ArticleRepositoryEloquent;
 use App\Http\Requests\CreateCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 
 class CategoryController extends Controller
 {
     protected $cateReposi;
-    public function __construct(CategoryRepositoryEloquent $cateReposi){
+    protected $articleReposi;
+    public function __construct(CategoryRepositoryEloquent $cateReposi, ArticleRepositoryEloquent $articleReposi){
         $this->cateReposi = $cateReposi;
+        $this->articleReposi = $articleReposi;
     }
     /**
      * Display a listing of the resource.
@@ -103,8 +106,18 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $this->cateReposi->delete($id);
-        return redirect()->route('category.index')->with(['flash_message' => 'Xóa danh mục thành công!', 'flash_level' => 'success']);
+        $cate = $this->cateReposi->find($id);
+        if ($cate != null) {
+            $articlesOfCate = $this->articleReposi->findByField('cate_id', $id);
+            foreach ($articlesOfCate as $art) {
+                $this->articleReposi->update([
+                        'cate_id' => 1
+                    ], $art->id);
+            }
+            $cate->delete();
+            return redirect()->route('category.index')->with(['flash_message' => 'Xóa danh mục thành công!', 'flash_level' => 'success']);
+        }
+        return redirect()->route('category.index')->with(['flash_message' => 'Không tìm thấy danh mục!', 'flash_level' => 'danger']);
     }
 
 /**
@@ -128,6 +141,27 @@ Make slug from input and check unique slug in category table
             $slug = "";
         }
         echo json_encode([$result, 'slug' => $slug]);
+    }
+
+    public function destroyListId()
+    {
+        if (isset($_GET['listId'])) {
+            foreach ($_GET['listId'] as $id) {
+                $cate = $this->cateReposi->find($id);
+                if ($cate != null) {
+                    $articlesOfCate = $this->articleReposi->findByField('cate_id', $id);
+                    foreach ($articlesOfCate as $art) {
+                        $this->articleReposi->update([
+                                'cate_id' => 1
+                            ], $art->id);
+                    }
+                    $cate->delete();
+                }
+            }
+            echo json_encode(true);
+        } else {
+            echo json_encode(false);
+        }
     }
 
 }

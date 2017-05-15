@@ -31,6 +31,7 @@
                         <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                             <thead>
                                 <tr>
+                                    <th><input type="checkbox" id="checkAll"></th>
                                     <th class="text-center">Tiêu đề</th>
                                     <th class="text-center">Danh mục</th>
                                     <th class="text-center">Tags</th>
@@ -41,7 +42,10 @@
                             <tbody>
                             @isset ($articles)
                                 @foreach ($articles as $article)
-                                    <tr class="odd gradeX div-show">
+                                    <tr class="odd gradeX div-show" id="{{ $article->id }}">
+                                        <td class="text-center">
+                                            <input type="checkbox" class="checkOne" value="{{ $article->id }}">
+                                        </td>
                                         <td class="center">{{ $article->title }}
                                             <p class="text-center div-hidden">
                                                 <a href="{{ asset('/'.$article->slug) }}">
@@ -79,7 +83,7 @@
                                                     </div><!-- /.modal-content -->
                                                 </div><!-- /.modal-dialog -->
                                             </div>
-                                            <!-- /.modal -->
+                                        <!-- /.modal -->
                                         </td>
                                         <td class="text-center">{{ $article->cate()->get()->first()->cate_name }}</td>
                                         <td class="text-center">
@@ -97,6 +101,15 @@
                             </tbody>
                         </table>
                         <!-- /.table-responsive -->
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <select id="actionDelete" class="form-control">
+                                    <option selected>Hành động...</option>
+                                    <option value="delete">Xóa mục đã chọn</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-success" id="submitDelete" type="button" data-toggle="modal" data-target="#modalOk">Đồng ý</button>
+                        </div>
                     </div>
                     <!-- /.panel-body -->
                 </div>
@@ -128,5 +141,9 @@
         })
         // popover demo
         $("[data-toggle=popover]").popover()
+
+
+        var url = "{{ route('articles.del-list') }}";
+        deleteListId(url);
     </script>
 @endsection

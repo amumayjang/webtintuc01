@@ -90,7 +90,11 @@ class HomeController extends Controller
             ]);
         return redirect()->back();
     }
-
+    /**
+     * [show post of category in archive page]
+     * @param  [type] $slug [slug of category]
+     * @return [type]       [archive page]
+     */
     public function category($slug)
     {
         $postInCate = DB::table('articles')
