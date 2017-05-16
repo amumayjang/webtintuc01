@@ -119,6 +119,7 @@
 	
 	<!-- JS -->
 	<script src="{{ url('public/owl-carousel/owl.carousel.js') }}"></script>
+	<script src="{{ url('public/js/myscript.js') }}"></script>
 	@yield('script')
 </body>
 </html>

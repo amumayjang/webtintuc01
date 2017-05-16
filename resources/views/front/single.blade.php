@@ -299,17 +299,30 @@
 		</div>
 	</div>
 </div>
+<input type="hidden" name="post_id" value="{{ $post->id }}">
 @endsection
 @section('script')
     <script>
 	    $(document).ready(function() {
-	      $("#owl-demo").owlCarousel({
-	        autoPlay: 3000,
-	        items : 5,
-	        itemsDesktop : [1199,4],
-	        itemsDesktopSmall : [979,4]
-	      });
-
-	    });
+	      	$("#owl-demo").owlCarousel({
+		        autoPlay: 3000,
+		        items : 5,
+		        itemsDesktop : [1199,4],
+		        itemsDesktopSmall : [979,4]
+	      	});
+	    	var idPost = $("input[name='post_id']").val();
+	    	var url = "{{ route('countViews') }}";
+	    	countView(url, idPost);
+	    	function countView(url, id) {
+		     	setTimeout(function() {
+			     	$.ajax({
+			     		url: url,
+			     		type: 'GET',
+			     		dataType: 'json',
+			     		data: {id: id},
+			     	})
+			     }, 6000);
+	    	}
+	    })
     </script>
 @endsection

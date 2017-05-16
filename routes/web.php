@@ -63,4 +63,5 @@ Route::post('sign-up', ['as' => 'signUp', 'uses' => 'LoginController@signUp']);
 Route::post('comments', ['as' => 'postComment', 'uses' => 'HomeController@postComment']);
 Route::get('category/{slug}', ['as' => 'category', 'uses' => 'HomeController@category']);
 Route::get('tag/{id}', ['as' => 'tag', 'uses' => 'HomeController@tag']);
+Route::get('count-view', ['as' => 'countViews', 'uses' => 'HomeController@countView']);
 Route::get('/{slug}', 'HomeController@single');

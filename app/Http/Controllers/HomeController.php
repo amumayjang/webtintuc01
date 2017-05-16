@@ -115,5 +115,23 @@ class HomeController extends Controller
     {
         return view('front.tag');
     }
+    
+    /**
+     * up view for article
+     * @return no return
+     */
+    public function countView()
+    {
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+            $article = $this->articleRepository->find($_GET['id']);
+            if ($article != null) {
+                $view = $article->view + 1;
+                $this->articleRepository->update([
+                        'view' => $view
+                    ], $id);
+            }
+        }
+    }
 
 }

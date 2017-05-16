@@ -86,7 +86,8 @@ class ArticlesController extends Controller
                 'time_public' => $timePublic,
                 'hot' => $request->hot,
                 'imgThumb' => $nameImage,
-                'status' => $status
+                'status' => $status, 
+                'view' => 0
             ]);
         //get current article
         $lastArticle = $this->articlesReposi->all()->last();
